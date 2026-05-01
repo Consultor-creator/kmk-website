@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F97316" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#F97316" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blur-glow">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <style>
+      .glow-pulse { animation: pulse 2.4s ease-in-out infinite; transform-origin: 50px 50px; }
+      .ring { animation: spin 8s linear infinite; transform-origin: 50px 50px; }
+      .star { animation: starGlow 2.4s ease-in-out infinite; transform-origin: 50px 50px; }
+      @keyframes pulse {
+        0%, 100% { opacity: 0.15; r: 28; }
+        50% { opacity: 0.45; r: 34; }
+      }
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      @keyframes starGlow {
+        0%, 100% { filter: drop-shadow(0 0 2px #F97316) drop-shadow(0 0 4px #F97316); }
+        50% { filter: drop-shadow(0 0 6px #F97316) drop-shadow(0 0 12px #F97316) drop-shadow(0 0 20px #F97316aa); }
+      }
+    </style>
+  </defs>
+
+  <!-- Glow aura -->
+  <circle class="glow-pulse" cx="50" cy="50" r="28" fill="#F97316" opacity="0.15"/>
+
+  <!-- Anillo azul girando -->
+  <g class="ring">
+    <!-- arco superior izquierdo -->
+    <path d="M 50 8 A 42 42 0 0 0 8 50" fill="none" stroke="#1E1E8F" stroke-width="5.5" stroke-linecap="round"/>
+    <!-- arco inferior derecho -->
+    <path d="M 50 92 A 42 42 0 0 0 92 50" fill="none" stroke="#1E1E8F" stroke-width="5.5" stroke-linecap="round"/>
+    <!-- arco naranja superior derecho -->
+    <path d="M 50 8 A 42 42 0 0 1 92 50" fill="none" stroke="#F97316" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
+    <!-- arco naranja inferior izquierdo -->
+    <path d="M 50 92 A 42 42 0 0 1 8 50" fill="none" stroke="#F97316" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
+  </g>
+
+  <!-- Estrella de 8 puntas naranja con glow -->
+  <g class="star">
+    <polygon points="
+      50,18 53.5,44 72,28 56.5,46.5
+      82,50 56.5,53.5 72,72 53.5,56
+      50,82 46.5,56 28,72 43.5,53.5
+      18,50 43.5,46.5 28,28 46.5,44"
+      fill="#F97316"
+      filter="url(#blur-glow)"
+    />
+  </g>
+</svg>

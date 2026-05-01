@@ -500,7 +500,35 @@ footer{background:var(--blue);color:var(--white);padding:56px 40px 36px}
       <button class="cw-snd" id="cwSnd">→</button>
     </div>
   </div>
-  <button class="cw-btn" id="cwBtn"><span>💬</span><span class="cw-badge" id="cwBadge">1</span></button>
+  <button class="cw-btn" id="cwBtn" style="background:var(--blue);overflow:visible"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32" style="display:block">
+  <defs>
+    <filter id="cit-glow">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <style>
+      .cit-pulse{animation:citPulse 2.4s ease-in-out infinite;transform-origin:50px 50px}
+      .cit-ring{animation:citSpin 8s linear infinite;transform-origin:50px 50px}
+      .cit-star{animation:citStarGlow 2.4s ease-in-out infinite;transform-origin:50px 50px}
+      @keyframes citPulse{0%,100%{opacity:.15}50%{opacity:.45}}
+      @keyframes citSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+      @keyframes citStarGlow{
+        0%,100%{filter:drop-shadow(0 0 2px #F97316) drop-shadow(0 0 4px #F97316)}
+        50%{filter:drop-shadow(0 0 8px #F97316) drop-shadow(0 0 16px #F97316) drop-shadow(0 0 24px #F97316)}
+      }
+    </style>
+  </defs>
+  <circle class="cit-pulse" cx="50" cy="50" r="30" fill="#F97316" opacity=".15"/>
+  <g class="cit-ring">
+    <path d="M50 8A42 42 0 0 0 8 50" fill="none" stroke="#ffffff" stroke-width="5.5" stroke-linecap="round"/>
+    <path d="M50 92A42 42 0 0 0 92 50" fill="none" stroke="#ffffff" stroke-width="5.5" stroke-linecap="round"/>
+    <path d="M50 8A42 42 0 0 1 92 50" fill="none" stroke="#F97316" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+    <path d="M50 92A42 42 0 0 1 8 50" fill="none" stroke="#F97316" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+  </g>
+  <g class="cit-star">
+    <polygon points="50,18 53.5,44 72,28 56.5,46.5 82,50 56.5,53.5 72,72 53.5,56 50,82 46.5,56 28,72 43.5,53.5 18,50 43.5,46.5 28,28 46.5,44" fill="#ffffff" filter="url(#cit-glow)"/>
+  </g>
+</svg><span class="cw-badge" id="cwBadge">1</span></button>
 </div>
 
 <button class="adm-trig" onclick="openAdm()">⚙️ Panel Admin</button>
