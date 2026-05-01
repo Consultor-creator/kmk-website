@@ -885,7 +885,24 @@ function descargarPDF(){
   </div>
   ${htmlComprobante(citaActual)}
   <script>setTimeout(()=>window.print(),500);<\/script>
-  </body></html>`);
+  
+<script>
+// EXPLORADOR DE ARCHIVOS
+function explorarImagen(callback){
+  const picker = document.createElement('input');
+  picker.type='file';picker.accept='image/*';picker.style.display='none';
+  document.body.appendChild(picker);
+  picker.addEventListener('change',function(){
+    const file=picker.files[0];
+    if(!file){document.body.removeChild(picker);return;}
+    const reader=new FileReader();
+    reader.onload=function(e){callback(e.target.result);document.body.removeChild(picker);};
+    reader.readAsDataURL(file);
+  });
+  picker.click();
+}
+</script>
+</body></html>`);
   win.document.close();
 }
 
@@ -1010,7 +1027,11 @@ function renderAdmOficinas(){
         <div class="full">
           <label class="al">Fotos (URLs)</label>
           <div class="chip-list" id="fotoChips_${i}">${(o.fotos||[]).map((f,fi)=>`<div class="chip"><span style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${f}</span><button class="chip-del" onclick="rmFoto(${i},${fi})">✕</button></div>`).join('')}</div>
-          <div class="chip-add-row"><input type="text" class="chip-input" id="fotoInput_${i}" placeholder="https://..."><button class="chip-add-btn" onclick="addFoto(${i})">+ Foto</button></div>
+          <div class="chip-add-row" style="flex-wrap:wrap;gap:6px">
+            <input type="text" class="chip-input" id="fotoInput_${i}" placeholder="https://... o usa Explorar" style="flex:1;min-width:160px">
+            <button class="chip-add-btn" onclick="addFoto(${i})">+ URL</button>
+            <button class="chip-add-btn" style="background:var(--blue)" onclick="explorarImagen(v=>{if(!aCfg.oficinas[${i}].fotos)aCfg.oficinas[${i}].fotos=[];aCfg.oficinas[${i}].fotos.push(v);renderAdmOficinas();})">📁 Explorar</button>
+          </div>
         </div>
       </div>
     </div>`).join('');
@@ -1047,6 +1068,23 @@ function saveConfig(){
 
 // INIT
 config=ld('kmk_agenda_cfg',DEF_CONFIG);
+</script>
+
+<script>
+// EXPLORADOR DE ARCHIVOS
+function explorarImagen(callback){
+  const picker = document.createElement('input');
+  picker.type='file';picker.accept='image/*';picker.style.display='none';
+  document.body.appendChild(picker);
+  picker.addEventListener('change',function(){
+    const file=picker.files[0];
+    if(!file){document.body.removeChild(picker);return;}
+    const reader=new FileReader();
+    reader.onload=function(e){callback(e.target.result);document.body.removeChild(picker);};
+    reader.readAsDataURL(file);
+  });
+  picker.click();
+}
 </script>
 </body>
 </html>

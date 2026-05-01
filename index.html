@@ -233,7 +233,7 @@ footer{background:var(--blue);color:var(--white);padding:56px 40px 36px}
 .adm-trig:hover{background:var(--blue2)}
 .adm-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px}
 .adm-ov.open{display:flex;animation:fadeIn .2s}
-.adm-box{background:var(--white);border-radius:20px;width:100%;max-width:920px;max-height:92vh;overflow-y:auto;display:flex;flex-direction:column;box-shadow:0 32px 80px rgba(0,0,0,.2)}
+.adm-box{background:var(--white);border-radius:20px;width:100%;max-width:1200px;max-height:95vh;overflow-y:auto;display:flex;flex-direction:column;box-shadow:0 32px 80px rgba(0,0,0,.2)}
 .adm-hdr{padding:20px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--white);z-index:2;border-radius:20px 20px 0 0}
 .adm-htitle{font-family:'Nunito',sans-serif;font-weight:900;font-size:22px;color:var(--text)}
 .adm-htitle em{color:var(--orange);font-style:normal}
@@ -500,35 +500,28 @@ footer{background:var(--blue);color:var(--white);padding:56px 40px 36px}
       <button class="cw-snd" id="cwSnd">→</button>
     </div>
   </div>
-  <button class="cw-btn" id="cwBtn" style="background:var(--blue);overflow:visible"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32" style="display:block">
+  <button class="cw-btn" id="cwBtn" style="background:var(--orange);overflow:visible">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32" style="display:block">
   <defs>
-    <filter id="cit-glow">
-      <feGaussianBlur stdDeviation="2.5" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
     <style>
-      .cit-pulse{animation:citPulse 2.4s ease-in-out infinite;transform-origin:50px 50px}
-      .cit-ring{animation:citSpin 8s linear infinite;transform-origin:50px 50px}
-      .cit-star{animation:citStarGlow 2.4s ease-in-out infinite;transform-origin:50px 50px}
-      @keyframes citPulse{0%,100%{opacity:.15}50%{opacity:.45}}
-      @keyframes citSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-      @keyframes citStarGlow{
-        0%,100%{filter:drop-shadow(0 0 2px #F97316) drop-shadow(0 0 4px #F97316)}
-        50%{filter:drop-shadow(0 0 8px #F97316) drop-shadow(0 0 16px #F97316) drop-shadow(0 0 24px #F97316)}
+      .cs{animation:csGlow 2s ease-in-out infinite;transform-origin:50px 50px}
+      .cs2{animation:csGlow 2s ease-in-out infinite 0.4s;transform-origin:50px 50px}
+      @keyframes csGlow{
+        0%,100%{filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 5px rgba(255,255,255,0.6))}
+        50%{filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 20px #fff)}
       }
     </style>
   </defs>
-  <circle class="cit-pulse" cx="50" cy="50" r="30" fill="#F97316" opacity=".15"/>
-  <g class="cit-ring">
-    <path d="M50 8A42 42 0 0 0 8 50" fill="none" stroke="#ffffff" stroke-width="5.5" stroke-linecap="round"/>
-    <path d="M50 92A42 42 0 0 0 92 50" fill="none" stroke="#ffffff" stroke-width="5.5" stroke-linecap="round"/>
-    <path d="M50 8A42 42 0 0 1 92 50" fill="none" stroke="#F97316" stroke-width="4" stroke-linecap="round" opacity=".9"/>
-    <path d="M50 92A42 42 0 0 1 8 50" fill="none" stroke="#F97316" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+  <g class="cs">
+    <path d="M50 12 C50 12 54 40 68 50 C54 60 50 88 50 88 C50 88 46 60 32 50 C46 40 50 12 50 12Z" fill="#ffffff"/>
+    <path d="M12 50 C12 50 40 46 50 32 C60 46 88 50 88 50 C88 50 60 54 50 68 C40 54 12 50 12 50Z" fill="#ffffff"/>
   </g>
-  <g class="cit-star">
-    <polygon points="50,18 53.5,44 72,28 56.5,46.5 82,50 56.5,53.5 72,72 53.5,56 50,82 46.5,56 28,72 43.5,53.5 18,50 43.5,46.5 28,28 46.5,44" fill="#ffffff" filter="url(#cit-glow)"/>
+  <g class="cs2">
+    <path d="M76 20 C76 20 77.5 26 80 28 C77.5 30 76 36 76 36 C76 36 74.5 30 72 28 C74.5 26 76 20 76 20Z" fill="#ffffff" opacity="0.85"/>
+    <path d="M24 65 C24 65 25 69 27 71 C25 73 24 77 24 77 C24 77 23 73 21 71 C23 69 24 65 24 65Z" fill="#ffffff" opacity="0.7"/>
   </g>
-</svg><span class="cw-badge" id="cwBadge">1</span></button>
+</svg>
+<span class="cw-badge" id="cwBadge">1</span></button>
 </div>
 
 <button class="adm-trig" onclick="openAdm()">⚙️ Panel Admin</button>
@@ -618,7 +611,7 @@ function renderProds(){
   const p=ld('kmk_pr',DEF_PRODS);
   document.getElementById('prodGrid').innerHTML=p.map(x=>`
     <div class="prod-card" onclick="openChat()">
-      ${x.img?`<img src="${x.img}" class="prod-img" alt="${x.name}">`:`<div class="prod-img-ph">${x.emoji||'🍿'}</div>`}
+      ${x.img?`<img src="${x.img}" class="prod-img" alt="${x.name}" style="width:80px;height:80px;object-fit:cover;border-radius:12px;margin:0 auto 12px;display:block">`:`<div class="prod-img-ph">${x.emoji||'🍿'}</div>`}
       <div class="prod-name">${x.name}</div>
       <div class="prod-desc">${x.desc}</div>
     </div>`).join('');
@@ -708,36 +701,65 @@ function closeAdm(){document.getElementById('admOv').classList.remove('open');}
 
 function rAdmS(){document.getElementById('sliderList').innerHTML=aS.map((s,i)=>`
   <div class="arow">
-    <button class="del-btn" onclick="aS.splice(${i},1);rAdmS()">✕</button>
-    <div class="full"><label class="al">URL imagen de fondo</label><input class="ai" value="${esc(s.img)}" oninput="aS[${i}].img=this.value" placeholder="https://..."></div>
-    <div class="full"><label class="al">Título</label><input class="ai" value="${esc(s.title)}" oninput="aS[${i}].title=this.value"></div>
-    <div class="full"><label class="al">Subtítulo</label><input class="ai" value="${esc(s.sub)}" oninput="aS[${i}].sub=this.value"></div>
-    <div><label class="al">Texto botón 1</label><input class="ai" value="${esc(s.btn1)}" oninput="aS[${i}].btn1=this.value"></div>
-    <div><label class="al">Texto botón 2</label><input class="ai" value="${esc(s.btn2)}" oninput="aS[${i}].btn2=this.value"></div>
-    <div><label class="al">Color fondo</label><input class="ai" type="color" value="${s.color||'#0B0D3C'}" oninput="aS[${i}].color=this.value" style="height:42px;padding:4px"></div>
+    <button class="del-btn" onclick="aS.splice(${i},1);rAdmS()">✕ Quitar</button>
+    <div style="display:grid;grid-template-columns:130px 1fr;gap:20px;align-items:start">
+      <div style="text-align:center">
+        ${s.img&&s.img.startsWith('data:')?`<img src="${s.img}" style="width:122px;height:80px;object-fit:cover;border-radius:8px;border:2px solid var(--border);display:block;margin-bottom:6px">`:s.img?`<div style="width:122px;height:80px;background:var(--gray2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);border:1px solid var(--border);padding:4px;text-align:center;margin-bottom:6px;word-break:break-all">🔗 URL</div>`:`<div style="width:122px;height:80px;background:${s.color||'#0B0D3C'};border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;margin-bottom:6px;border:2px dashed var(--border)">Sin imagen</div>`}
+        <button onclick="explorarImagen(v=>{aS[${i}].img=v;rAdmS();})" style="width:122px;background:var(--blue);color:#fff;border:none;padding:6px 0;border-radius:6px;font-family:Nunito,sans-serif;font-weight:700;font-size:10px;cursor:pointer;display:block;margin-bottom:4px">📁 Explorar</button>
+        ${s.img?`<button onclick="aS[${i}].img='';rAdmS();" style="width:122px;background:transparent;color:#EF4444;border:1px solid #EF4444;padding:5px 0;border-radius:6px;font-family:Nunito,sans-serif;font-weight:700;font-size:10px;cursor:pointer;display:block;margin-bottom:4px">✕ Quitar imagen</button>`:''}
+        <div><label class="al" style="margin-top:8px">Color fondo</label><input type="color" class="ai" value="${s.color||'#0B0D3C'}" oninput="aS[${i}].color=this.value" style="height:36px;padding:2px;cursor:pointer"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div><label class="al">Título principal</label><input class="ai" value="${esc(s.title)}" oninput="aS[${i}].title=this.value" placeholder="Inicia tu negocio..."></div>
+        <div><label class="al">Subtítulo</label><textarea class="ai ata" oninput="aS[${i}].sub=this.value" placeholder="Subtítulo del slide..." style="min-height:64px">${esc(s.sub)}</textarea></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div><label class="al">Texto botón 1</label><input class="ai" value="${esc(s.btn1)}" oninput="aS[${i}].btn1=this.value" placeholder="Recibir recomendación"></div>
+          <div><label class="al">Texto botón 2</label><input class="ai" value="${esc(s.btn2)}" oninput="aS[${i}].btn2=this.value" placeholder="Hablar con asesor"></div>
+        </div>
+        <div><label class="al">URL imagen externa (opcional)</label><input class="ai" value="${s.img&&!s.img.startsWith('data:')?esc(s.img):''}" oninput="aS[${i}].img=this.value" placeholder="https://... (o usa Explorar arriba)"></div>
+      </div>
+    </div>
   </div>`).join('');}
 function addSlide(){if(aS.length>=5)return alert('Máximo 5 slides');aS.push({id:Date.now(),img:'',color:'#0B0D3C',title:'Nuevo slide',sub:'',btn1:'✨ Recibir recomendación',btn2:'💬 Hablar con asesor'});rAdmS();}
 
 function rAdmP(){document.getElementById('prodAdmList').innerHTML=aP.map((p,i)=>`
-  <div class="arow" style="grid-template-columns:1fr 1fr 1fr">
+  <div class="arow">
     <button class="del-btn" onclick="aP.splice(${i},1);rAdmP()">✕</button>
-    <div><label class="al">Emoji</label><input class="ai" value="${esc(p.emoji)}" oninput="aP[${i}].emoji=this.value" placeholder="🍿"></div>
-    <div><label class="al">Nombre</label><input class="ai" value="${esc(p.name)}" oninput="aP[${i}].name=this.value" placeholder="Churros"></div>
-    <div><label class="al">Descripción</label><input class="ai" value="${esc(p.desc)}" oninput="aP[${i}].desc=this.value" placeholder="Salados y dulces"></div>
-    <div class="full"><label class="al">URL imagen (opcional)</label><input class="ai" value="${esc(p.img)}" oninput="aP[${i}].img=this.value" placeholder="https://..."></div>
+    <div style="display:grid;grid-template-columns:84px 1fr;gap:16px;align-items:start">
+      <div style="text-align:center">
+        ${p.img?`<img src="${p.img}" style="width:76px;height:76px;object-fit:cover;border-radius:10px;border:2px solid var(--border);display:block;margin-bottom:6px">`:`<div style="width:76px;height:76px;background:var(--gray2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:30px;border:2px dashed var(--border);margin-bottom:6px">${p.emoji||'🍿'}</div>`}
+        <button onclick="explorarImagen(v=>{aP[${i}].img=v;rAdmP();})" style="width:76px;background:var(--blue);color:#fff;border:none;padding:5px 0;border-radius:6px;font-family:Nunito,sans-serif;font-weight:700;font-size:10px;cursor:pointer;display:block;margin-bottom:4px">📁 Imagen</button>
+        ${p.img?`<button onclick="aP[${i}].img='';rAdmP();" style="width:76px;background:transparent;color:#EF4444;border:1px solid #EF4444;padding:4px 0;border-radius:6px;font-family:Nunito,sans-serif;font-weight:700;font-size:10px;cursor:pointer;display:block">✕ Quitar</button>`:''}
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div><label class="al">Nombre</label><input class="ai" value="${esc(p.name)}" oninput="aP[${i}].name=this.value" placeholder="Churros"></div>
+        <div><label class="al">Emoji (sin imagen)</label><input class="ai" value="${esc(p.emoji)}" oninput="aP[${i}].emoji=this.value" placeholder="🍿"></div>
+        <div style="grid-column:1/-1"><label class="al">Descripción corta</label><input class="ai" value="${esc(p.desc)}" oninput="aP[${i}].desc=this.value" placeholder="Salados y dulces"></div>
+      </div>
+    </div>
   </div>`).join('');}
 function addProd(){aP.push({id:Date.now(),emoji:'🍿',name:'',desc:'',img:''});rAdmP();}
 
 function rAdmM(){document.getElementById('admMaqList').innerHTML=aM.map((m,i)=>`
   <div class="arow">
     <button class="del-btn" onclick="aM.splice(${i},1);rAdmM()">✕ Eliminar</button>
-    <div class="full"><label class="al">Nombre</label><input class="ai" value="${esc(m.name)}" oninput="aM[${i}].name=this.value" placeholder="Modeladora JetFood..."></div>
-    <div><label class="al">Etiqueta</label><input class="ai" value="${esc(m.tag||'')}" oninput="aM[${i}].tag=this.value" placeholder="BESTSELLER"></div>
-    <div><label class="al">Emoji</label><input class="ai" value="${esc(m.emoji||'⚙️')}" oninput="aM[${i}].emoji=this.value"></div>
-    <div class="full"><label class="al">Descripción</label><textarea class="ai ata" oninput="aM[${i}].desc=this.value">${esc(m.desc)}</textarea></div>
-    <div class="full"><label class="al">Especificaciones (separadas por coma)</label><input class="ai" value="${esc((m.specs||[]).join(', '))}" oninput="aM[${i}].specs=this.value.split(',').map(s=>s.trim()).filter(Boolean)"></div>
-    <div class="full"><label class="al">URL imagen</label><input class="ai" value="${esc(m.img||'')}" oninput="aM[${i}].img=this.value" placeholder="https://..."></div>
-    <div class="full"><label class="al">URL video YouTube</label><input class="ai" value="${esc(m.video||'')}" oninput="aM[${i}].video=this.value" placeholder="https://youtube.com/watch?v=..."></div>
+    <div style="display:grid;grid-template-columns:120px 1fr;gap:20px;align-items:start">
+      <div style="text-align:center">
+        ${m.img?`<img src="${m.img}" style="width:112px;height:90px;object-fit:cover;border-radius:10px;border:2px solid var(--border);display:block;margin-bottom:6px">`:`<div style="width:112px;height:90px;background:var(--gray2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:36px;border:2px dashed var(--border);margin-bottom:6px">${m.emoji||'⚙️'}</div>`}
+        <button onclick="explorarImagen(v=>{aM[${i}].img=v;rAdmM();})" style="width:112px;background:var(--blue);color:#fff;border:none;padding:6px 0;border-radius:6px;font-family:Nunito,sans-serif;font-weight:700;font-size:11px;cursor:pointer;display:block;margin-bottom:4px">📁 Explorar imagen</button>
+        ${m.img?`<button onclick="aM[${i}].img='';rAdmM();" style="width:112px;background:transparent;color:#EF4444;border:1px solid #EF4444;padding:5px 0;border-radius:6px;font-family:Nunito,sans-serif;font-weight:700;font-size:11px;cursor:pointer;display:block">✕ Quitar imagen</button>`:''}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+          <div style="grid-column:1/-1"><label class="al">Nombre de la máquina</label><input class="ai" value="${esc(m.name)}" oninput="aM[${i}].name=this.value" placeholder="Modeladora JetFood..."></div>
+          <div><label class="al">Etiqueta</label><input class="ai" value="${esc(m.tag||'')}" oninput="aM[${i}].tag=this.value" placeholder="BESTSELLER"></div>
+          <div><label class="al">Emoji (sin imagen)</label><input class="ai" value="${esc(m.emoji||'⚙️')}" oninput="aM[${i}].emoji=this.value"></div>
+          <div><label class="al">URL Video YouTube</label><input class="ai" value="${esc(m.video||'')}" oninput="aM[${i}].video=this.value" placeholder="https://youtube.com/watch?v=..."></div>
+        </div>
+        <div><label class="al">Descripción completa</label><textarea class="ai ata" oninput="aM[${i}].desc=this.value" placeholder="Descripción de la máquina..." style="min-height:80px">${esc(m.desc)}</textarea></div>
+        <div><label class="al">Especificaciones (separadas por coma)</label><input class="ai" value="${esc((m.specs||[]).join(', '))}" oninput="aM[${i}].specs=this.value.split(',').map(s=>s.trim()).filter(Boolean)" placeholder="Capacidad: 5000/hr, 7g-240g, Certificación CE"></div>
+      </div>
+    </div>
   </div>`).join('');}
 function addMaq(){aM.push({id:Date.now(),tag:'',emoji:'⚙️',name:'',desc:'',specs:[],img:'',video:''});rAdmM();}
 
@@ -822,6 +844,28 @@ cwInput.addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg();});
 setTimeout(()=>{if(!chatOpen)openChat();},8000);
 
 renderSlider();renderProds();renderMaq();renderTest();
+</script>
+
+<script>
+// EXPLORADOR DE ARCHIVOS
+function explorarImagen(callback){
+  const picker = document.createElement('input');
+  picker.type = 'file';
+  picker.accept = 'image/*';
+  picker.style.display = 'none';
+  document.body.appendChild(picker);
+  picker.addEventListener('change', function(){
+    const file = picker.files[0];
+    if(!file){ document.body.removeChild(picker); return; }
+    const reader = new FileReader();
+    reader.onload = function(e){
+      callback(e.target.result);
+      document.body.removeChild(picker);
+    };
+    reader.readAsDataURL(file);
+  });
+  picker.click();
+}
 </script>
 </body>
 </html>
