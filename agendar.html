@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agenda tu Demostración — KMK Snack Machines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+:root{--blue:#2D2DB5;--blue2:#3838CC;--blue-xl:#E8E8FF;--orange:#F97316;--orange2:#EA6000;--white:#FFFFFF;--gray:#F5F6FA;--gray2:#EEF0F8;--text:#1A1A3E;--muted:#6B7099;--border:#E0E2F0;--green:#16a34a;--red:#EF4444}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--gray);color:var(--text);font-family:'Nunito Sans',sans-serif;font-size:16px;line-height:1.6}
+nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:70px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 16px rgba(45,45,181,.07)}
+.nav-logo img{height:48px;width:auto;object-fit:contain}
+.nav-back{color:var(--blue);font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;text-decoration:none;display:flex;align-items:center;gap:6px}
+.nav-back:hover{text-decoration:underline}
+.hero{background:linear-gradient(135deg,var(--blue) 0%,var(--blue2) 100%);padding:48px 40px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.04) 1px,transparent 1px);background-size:32px 32px}
+.hero-inner{position:relative;z-index:1;max-width:680px;margin:0 auto}
+.hero h1{font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(26px,5vw,42px);color:var(--white);margin-bottom:10px;line-height:1.1}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero p{font-size:16px;color:rgba(255,255,255,.8);font-weight:300}
+.main{max-width:960px;margin:0 auto;padding:40px 20px 80px}
+.steps-bar{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:36px;flex-wrap:wrap;row-gap:12px}
+.step-item{display:flex;align-items:center;gap:0}
+.step-circle{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;border:2px solid var(--border);background:var(--white);color:var(--muted);transition:all .3s;flex-shrink:0}
+.step-circle.active{background:var(--blue);border-color:var(--blue);color:var(--white)}
+.step-circle.done{background:var(--green);border-color:var(--green);color:var(--white)}
+.step-label{font-family:'Nunito',sans-serif;font-weight:700;font-size:11px;color:var(--muted);margin-left:6px;white-space:nowrap}
+.step-label.active{color:var(--blue)}
+.step-line{width:36px;height:2px;background:var(--border);margin:0 6px;flex-shrink:0}
+.step-line.done{background:var(--green)}
+.card{background:var(--white);border-radius:20px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,.06);border:1px solid var(--border);margin-bottom:20px}
+.card-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:19px;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
+.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.demo-card{border:2px solid var(--border);border-radius:16px;padding:22px;cursor:pointer;transition:all .3s;position:relative;background:var(--white)}
+.demo-card:hover{border-color:var(--blue);box-shadow:0 6px 20px rgba(45,45,181,.1)}
+.demo-card.selected{border-color:var(--orange);background:rgba(249,115,22,.02)}
+.demo-card.selected::after{content:'✓';position:absolute;top:12px;right:12px;background:var(--orange);color:var(--white);width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px}
+.demo-icon{font-size:32px;margin-bottom:10px;display:block}
+.demo-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:17px;color:var(--text);margin-bottom:5px}
+.demo-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:10px}
+.demo-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:100px;font-family:'Nunito',sans-serif;font-weight:800;font-size:11px}
+.demo-badge.free{background:rgba(22,163,74,.1);color:var(--green)}
+.demo-badge.paid{background:rgba(249,115,22,.1);color:var(--orange)}
+.demo-duration{font-size:11px;color:var(--muted);margin-top:5px}
+.oficinas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.oficina-card{border:2px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .3s}
+.oficina-card:hover{border-color:var(--blue);box-shadow:0 6px 20px rgba(45,45,181,.1)}
+.oficina-card.selected{border-color:var(--orange)}
+.oficina-hdr{background:var(--blue);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;transition:background .3s}
+.oficina-card.selected .oficina-hdr{background:var(--orange)}
+.oficina-name{font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;color:var(--white)}
+.oficina-check{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--white);font-weight:900}
+.oficina-card.selected .oficina-check{background:var(--white);color:var(--orange)}
+.oficina-body{padding:14px 18px;background:var(--white)}
+.oficina-photos{display:flex;gap:5px;margin-bottom:10px}
+.oficina-photo{width:54px;height:44px;object-fit:cover;border-radius:6px;background:var(--gray2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.oficina-addr{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:6px}
+.oficina-map{display:inline-flex;align-items:center;gap:4px;font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;color:var(--blue);text-decoration:none}
+.cal-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.cal-month-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.cal-month-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;color:var(--text)}
+.cal-nav-btn{background:var(--gray);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center}
+.cal-nav-btn:hover{background:var(--border)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-day-header{font-family:'Nunito',sans-serif;font-weight:700;font-size:10px;color:var(--muted);text-align:center;padding:3px 0}
+.cal-day{height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:600;font-size:12px;cursor:pointer;transition:all .2s;color:var(--text)}
+.cal-day:hover:not(.disabled):not(.empty){background:var(--blue-xl);color:var(--blue)}
+.cal-day.selected{background:var(--blue);color:var(--white)}
+.cal-day.disabled{color:var(--border);cursor:not-allowed}
+.cal-day.empty{cursor:default}
+.cal-day.has-slots::after{content:'';display:block;width:4px;height:4px;background:var(--orange);border-radius:50%;position:absolute;bottom:3px;left:50%;transform:translateX(-50%)}
+.cal-day.has-slots{position:relative}
+.cal-day.today{border:2px solid var(--blue)}
+.slots-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;color:var(--text);margin-bottom:14px}
+.slots-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.slot{padding:9px 6px;border:2px solid var(--border);border-radius:9px;text-align:center;cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;color:var(--text)}
+.slot:hover:not(.full){border-color:var(--blue);color:var(--blue);background:var(--blue-xl)}
+.slot.selected{border-color:var(--orange);background:rgba(249,115,22,.06);color:var(--orange)}
+.slot.full{background:var(--gray2);color:var(--muted);cursor:not-allowed}
+.slot-spots{font-size:10px;color:var(--muted);font-weight:400;margin-top:1px}
+.slot.full .slot-spots{color:var(--red)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg.full{grid-column:1/-1}
+.fl{font-family:'Nunito',sans-serif;font-size:10px;font-weight:800;color:var(--blue);letter-spacing:2px;text-transform:uppercase}
+.fi,.fsel,.fta{background:var(--gray);border:2px solid var(--border);color:var(--text);font-family:'Nunito Sans',sans-serif;font-size:14px;padding:11px 14px;outline:none;width:100%;transition:border-color .2s;border-radius:9px;appearance:none}
+.fi:focus,.fsel:focus,.fta:focus{border-color:var(--blue);background:var(--white)}
+.fi::placeholder,.fta::placeholder{color:var(--muted);opacity:.7}
+.fta{min-height:80px;resize:vertical}
+.resumen-box{background:var(--blue-xl);border:2px solid var(--blue);border-radius:14px;padding:20px;margin-bottom:20px}
+.resumen-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:14px;color:var(--blue);margin-bottom:14px}
+.resumen-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(45,45,181,.1)}
+.resumen-row:last-child{border-bottom:none}
+.resumen-label{font-size:13px;color:var(--muted)}
+.resumen-val{font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;color:var(--text)}
+.resumen-total{font-family:'Nunito',sans-serif;font-weight:900;font-size:18px;color:var(--blue)}
+.stripe-box{background:var(--gray);border:2px solid var(--border);border-radius:11px;padding:18px;margin-bottom:18px}
+.stripe-label{font-family:'Nunito',sans-serif;font-size:10px;font-weight:800;color:var(--blue);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;display:block}
+#card-element{padding:13px;background:var(--white);border:2px solid var(--border);border-radius:9px}
+#card-errors{color:var(--red);font-size:12px;margin-top:6px;min-height:18px}
+.stripe-secure{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);margin-top:6px}
+.btn-main{background:var(--orange);color:var(--white);font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;padding:13px 28px;border:none;cursor:pointer;border-radius:50px;display:inline-flex;align-items:center;gap:8px;transition:all .25s;box-shadow:0 4px 14px rgba(249,115,22,.3)}
+.btn-main:hover{background:var(--orange2);transform:translateY(-1px)}
+.btn-main:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.btn-blue{background:var(--blue);color:var(--white);font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;padding:13px 28px;border:none;cursor:pointer;border-radius:50px;display:inline-flex;align-items:center;gap:8px;transition:all .25s}
+.btn-blue:hover{background:var(--blue2)}
+.btn-ghost{background:transparent;color:var(--muted);font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;padding:11px 22px;border:2px solid var(--border);cursor:pointer;border-radius:50px;transition:all .2s}
+.btn-ghost:hover{border-color:var(--blue);color:var(--blue)}
+.btn-row{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap}
+.success-box{text-align:center;padding:40px 20px}
+.success-icon{font-size:64px;margin-bottom:16px;display:block}
+.success-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:26px;color:var(--text);margin-bottom:10px}
+.success-sub{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:24px}
+.success-detail{background:var(--gray);border-radius:14px;padding:20px;text-align:left;margin-bottom:20px}
+.success-detail-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px}
+.success-detail-row:last-child{border-bottom:none}
+.info-box{background:var(--blue-xl);border:1px solid rgba(45,45,181,.2);border-radius:10px;padding:14px 16px;font-size:13px;color:var(--blue);margin-bottom:16px;line-height:1.6}
+.warn-box{background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.25);border-radius:10px;padding:14px 16px;font-size:13px;color:var(--orange2);margin-bottom:16px;line-height:1.6}
+/* REAGENDAR MODAL */
+.reagenda-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1100;backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px}
+.reagenda-ov.open{display:flex;animation:fadeIn .2s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.reagenda-box{background:var(--white);border-radius:20px;width:100%;max-width:500px;padding:28px;box-shadow:0 24px 60px rgba(0,0,0,.2)}
+.reagenda-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;color:var(--text);margin-bottom:6px}
+.reagenda-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
+/* ADMIN */
+.adm-fab{position:fixed;bottom:28px;right:28px;background:var(--blue);color:var(--white);font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;padding:10px 20px;border-radius:50px;border:none;cursor:pointer;z-index:700;box-shadow:0 4px 16px rgba(45,45,181,.3);display:flex;align-items:center;gap:8px}
+.adm-fab:hover{background:var(--blue2)}
+.adm-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;backdrop-filter:blur(6px);align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
+.adm-ov.open{display:flex;animation:fadeIn .2s}
+.adm-box{background:var(--white);border-radius:20px;width:100%;max-width:960px;margin:auto;box-shadow:0 32px 80px rgba(0,0,0,.2)}
+.adm-hdr{padding:20px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;border-radius:20px 20px 0 0;background:var(--white);position:sticky;top:0;z-index:2}
+.adm-htitle{font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;color:var(--text)}
+.adm-htitle em{color:var(--orange);font-style:normal}
+.adm-x{background:var(--gray);border:none;width:34px;height:34px;border-radius:50%;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.adm-body{padding:24px;display:flex;flex-direction:column;gap:20px}
+.adm-sec{background:var(--gray);border-radius:14px;padding:20px}
+.adm-sec-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;color:var(--text);margin-bottom:3px}
+.adm-sec-sub{font-size:12px;color:var(--muted);margin-bottom:16px}
+.adm-row{background:var(--white);border:1px solid var(--border);border-radius:11px;padding:18px;margin-bottom:10px;position:relative}
+.adm-row-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.adm-row-grid .full{grid-column:1/-1}
+.adm-row-grid .thirds{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.al{font-family:'Nunito',sans-serif;font-size:10px;font-weight:800;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;display:block}
+.ai,.ata{background:var(--gray);border:1px solid var(--border);color:var(--text);font-family:'Nunito Sans',sans-serif;font-size:13px;padding:9px 11px;outline:none;width:100%;border-radius:8px;transition:border-color .2s}
+.ai:focus,.ata:focus{border-color:var(--blue)}
+.ata{min-height:60px;resize:vertical}
+.del-btn{position:absolute;top:10px;right:10px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--red);font-family:'Nunito',sans-serif;font-weight:700;font-size:11px;padding:4px 10px;border-radius:50px;cursor:pointer}
+.adm-add-btn{background:transparent;border:2px dashed var(--border);color:var(--blue);font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;padding:11px;width:100%;border-radius:11px;cursor:pointer;transition:all .2s;margin-top:4px}
+.adm-add-btn:hover{border-color:var(--blue);background:var(--blue-xl)}
+.adm-save-btn{background:var(--orange);color:var(--white);font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;padding:14px;border:none;border-radius:50px;cursor:pointer;width:100%}
+.adm-save-btn:hover{background:var(--orange2)}
+.chip-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{display:flex;align-items:center;gap:5px;background:var(--white);border:1px solid var(--border);border-radius:7px;padding:5px 9px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:700}
+.chip-del{background:none;border:none;color:var(--red);cursor:pointer;font-size:13px;padding:0;line-height:1}
+.chip-add-row{display:flex;gap:7px;margin-top:8px}
+.chip-input{flex:1;background:var(--gray);border:1px solid var(--border);font-family:'Nunito Sans',sans-serif;font-size:13px;padding:8px 11px;border-radius:8px;outline:none;color:var(--text)}
+.chip-add-btn{background:var(--blue);color:var(--white);border:none;padding:8px 14px;border-radius:8px;font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;cursor:pointer}
+.dias-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.dia-btn{padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--white);font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;cursor:pointer;transition:all .2s;color:var(--muted)}
+.dia-btn.active{background:var(--blue);border-color:var(--blue);color:var(--white)}
+@media(max-width:680px){
+  nav{padding:0 16px}
+  .demo-grid{grid-template-columns:1fr}
+  .cal-layout{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+  .adm-row-grid{grid-template-columns:1fr}
+  .adm-row-grid .thirds{grid-template-columns:1fr}
+  .main{padding:20px 14px 60px}
+  .hero{padding:36px 20px}
+  .slots-grid{grid-template-columns:repeat(2,1fr)}
+  .btn-row{justify-content:stretch}
+  .btn-row button{flex:1;justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><img src="logotk.png" alt="KMK"></a>
+  <a href="index.html" class="nav-back">← Volver al sitio</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <h1>Agenda tu <em>Demostración</em></h1>
+    <p>Conoce nuestras máquinas en persona y empieza tu negocio de snacks.</p>
+  </div>
+</div>
+
+<div class="main">
+  <div class="steps-bar" id="stepsBar">
+    <div class="step-item"><div class="step-circle active" id="sc1">1</div><div class="step-label active" id="sl1">Tipo</div></div>
+    <div class="step-line" id="line1"></div>
+    <div class="step-item"><div class="step-circle" id="sc2">2</div><div class="step-label" id="sl2">Oficina</div></div>
+    <div class="step-line" id="line2"></div>
+    <div class="step-item"><div class="step-circle" id="sc3">3</div><div class="step-label" id="sl3">Fecha y hora</div></div>
+    <div class="step-line" id="line3"></div>
+    <div class="step-item"><div class="step-circle" id="sc4">4</div><div class="step-label" id="sl4">Tus datos</div></div>
+    <div class="step-line" id="line4"></div>
+    <div class="step-item"><div class="step-circle" id="sc5">5</div><div class="step-label" id="sl5">Confirmación</div></div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div id="step1">
+    <div class="card">
+      <div class="card-title">🎯 ¿Qué tipo de demostración quieres?</div>
+      <div class="card-sub">Elige la opción que mejor se adapta a tu momento</div>
+      <div class="demo-grid">
+        <div class="demo-card" id="demoGeneral" onclick="selectDemo('general')">
+          <span class="demo-icon">👥</span>
+          <div class="demo-title">Demostración General</div>
+          <p class="demo-desc">Un técnico explica el funcionamiento, desarme, limpieza y capacidad. Ideal si estás explorando opciones.</p>
+          <span class="demo-badge free">✓ Gratuita</span>
+          <div class="demo-duration">⏱ 1 hora aproximadamente</div>
+        </div>
+        <div class="demo-card" id="demoPersonal" onclick="selectDemo('personalizada')">
+          <span class="demo-icon">⚙️</span>
+          <div class="demo-title">Demostración Personalizada</div>
+          <p class="demo-desc">Trae tu propia masa y ve tu producto en acción. El costo se descuenta si decides comprar.</p>
+          <span class="demo-badge paid" id="demoPrecioLabel">💳 $1,000 MXN</span>
+          <div class="demo-duration">⏱ 1 a 2 horas · Se descuenta al comprar</div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-main" onclick="goStep(2)" id="btnStep1" disabled>Continuar →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div id="step2" style="display:none">
+    <div class="card">
+      <div class="card-title">📍 ¿En qué oficina prefieres la demo?</div>
+      <div class="card-sub">Selecciona la sede más conveniente para ti</div>
+      <div class="oficinas-grid" id="oficinasGrid"></div>
+      <div class="btn-row">
+        <button class="btn-ghost" onclick="goStep(1)">← Atrás</button>
+        <button class="btn-main" onclick="goStep(3)" id="btnStep2" disabled>Continuar →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div id="step3" style="display:none">
+    <div class="card">
+      <div class="card-title">📅 Elige fecha y hora</div>
+      <div class="card-sub" id="step3Info"></div>
+      <div class="cal-layout">
+        <div>
+          <div class="cal-month-nav">
+            <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
+            <div class="cal-month-title" id="calTitle"></div>
+            <button class="cal-nav-btn" onclick="changeMonth(1)">›</button>
+          </div>
+          <div class="cal-grid" id="calGrid"></div>
+        </div>
+        <div>
+          <div class="slots-title" id="slotsTitle">← Selecciona una fecha</div>
+          <div class="slots-grid" id="slotsGrid"></div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-ghost" onclick="goStep(2)">← Atrás</button>
+        <button class="btn-main" onclick="goStep(4)" id="btnStep3" disabled>Continuar →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div id="step4" style="display:none">
+    <div class="card">
+      <div class="card-title">👤 Tus datos de contacto</div>
+      <div class="card-sub">Te enviaremos la confirmación a tu correo y guardaremos tus datos para darte seguimiento</div>
+      <div class="form-grid">
+        <div class="fg"><label class="fl">Nombre completo *</label><input type="text" class="fi" id="fNombre" placeholder="Tu nombre completo" required></div>
+        <div class="fg"><label class="fl">Teléfono / WhatsApp *</label><input type="tel" class="fi" id="fTel" placeholder="+52 000 000 0000" required></div>
+        <div class="fg full"><label class="fl">Correo electrónico *</label><input type="email" class="fi" id="fEmail" placeholder="tu@correo.com" required></div>
+        <div class="fg full"><label class="fl">¿Qué quieres producir?</label><input type="text" class="fi" id="fProducto" placeholder="Churros, kibbeh, croquetas..."></div>
+        <div class="fg"><label class="fl">Ciudad / Estado</label><input type="text" class="fi" id="fCiudad" placeholder="Guadalajara, Jalisco"></div>
+        <div class="fg"><label class="fl">¿Cómo nos conociste?</label>
+          <select class="fsel fi" id="fCanal">
+            <option value="">Seleccionar...</option>
+            <option>Citlalli (chat del sitio)</option>
+            <option>WhatsApp</option>
+            <option>Facebook / Instagram</option>
+            <option>Google</option>
+            <option>Recomendación</option>
+            <option>YouTube</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="fg full"><label class="fl">Mensaje o pregunta (opcional)</label><textarea class="fta" id="fMensaje" placeholder="Cuéntanos sobre tu proyecto..."></textarea></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">📋 Resumen de tu cita</div>
+      <div class="resumen-box">
+        <div class="resumen-title">Detalle de la reservación</div>
+        <div class="resumen-row"><span class="resumen-label">Tipo</span><span class="resumen-val" id="rTipo">—</span></div>
+        <div class="resumen-row"><span class="resumen-label">Oficina</span><span class="resumen-val" id="rOficina">—</span></div>
+        <div class="resumen-row"><span class="resumen-label">Fecha</span><span class="resumen-val" id="rFecha">—</span></div>
+        <div class="resumen-row"><span class="resumen-label">Hora</span><span class="resumen-val" id="rHora">—</span></div>
+        <div class="resumen-row"><span class="resumen-label">Total</span><span class="resumen-total" id="rTotal">Gratis</span></div>
+      </div>
+      <div id="politicasCancela" class="info-box" style="display:none"></div>
+      <div id="stripeSection" style="display:none">
+        <div class="stripe-box">
+          <span class="stripe-label">💳 Datos de pago</span>
+          <div id="card-element"></div>
+          <div id="card-errors"></div>
+          <div class="stripe-secure">🔒 Pago seguro procesado por Stripe · SSL</div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-ghost" onclick="goStep(3)">← Atrás</button>
+        <button class="btn-main" onclick="confirmarCita()" id="btnConfirmar">
+          <span id="btnConfirmarTxt">✅ Confirmar cita</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div id="step5" style="display:none">
+    <div class="card">
+      <div class="success-box">
+        <span class="success-icon">🎉</span>
+        <div class="success-title">¡Cita confirmada!</div>
+        <p class="success-sub">Tu demostración ha sido agendada. Te enviamos la confirmación por correo.</p>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:28px">
+          <button class="btn-main" onclick="descargarPDF()">⬇️ Descargar PDF</button>
+          <button class="btn-blue" onclick="imprimirComprobante()">🖨️ Imprimir</button>
+          <button class="btn-ghost" onclick="reenviarCorreo()" id="btnReenviar">📧 Reenviar correo</button>
+        </div>
+        <div id="comprobante" style="max-width:520px;margin:0 auto 24px;text-align:left"></div>
+        <div id="politicasSuccess" class="warn-box" style="max-width:520px;margin:0 auto 20px;text-align:left"></div>
+        <a href="index.html" class="btn-blue" style="display:inline-flex;justify-content:center">← Volver al sitio</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL REAGENDAR/CANCELAR -->
+<div class="reagenda-ov" id="reagendaOv">
+  <div class="reagenda-box">
+    <div class="reagenda-title" id="reagendaTitulo">Reagendar cita</div>
+    <div class="reagenda-sub" id="reagendaSub"></div>
+    <div class="fg" style="margin-bottom:14px">
+      <label class="fl">Motivo *</label>
+      <textarea class="fta" id="reagendaMotivo" placeholder="Cuéntanos por qué necesitas reagendar o cancelar..."></textarea>
+    </div>
+    <div class="btn-row" style="margin-top:0">
+      <button class="btn-ghost" onclick="closeReagenda()">Cancelar</button>
+      <button class="btn-main" onclick="confirmarReagenda()">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<button class="adm-fab" onclick="openAdm()">⚙️ Configuración</button>
+<div class="adm-ov" id="admOv">
+  <div class="adm-box">
+    <div class="adm-hdr">
+      <div class="adm-htitle">⚙️ Config <em>Agendador</em></div>
+      <button class="adm-x" onclick="closeAdm()">✕</button>
+    </div>
+    <div class="adm-body">
+
+      <!-- GENERAL -->
+      <div class="adm-sec">
+        <div class="adm-sec-title">⚙️ Configuración general</div>
+        <div class="adm-sec-sub">Precios, tiempos de antelación y políticas de cancelación/reagendamiento.</div>
+        <div class="adm-row">
+          <div class="adm-row-grid">
+            <div><label class="al">Precio demo personalizada (MXN)</label><input class="ai" type="number" id="aPrecio" placeholder="1000"></div>
+            <div><label class="al">Días máximos para agendar</label><input class="ai" type="number" id="aDias" placeholder="60"></div>
+            <div><label class="al">Horas mínimas de antelación</label><input class="ai" type="number" id="aAntelacion" placeholder="24"></div>
+            <div><label class="al">Horas para cancelar sin costo</label><input class="ai" type="number" id="aCancelacion" placeholder="48"></div>
+            <div><label class="al">Horas para reagendar</label><input class="ai" type="number" id="aReagendar" placeholder="24"></div>
+            <div><label class="al">Veces que puede reagendar (pagada)</label><input class="ai" type="number" id="aMaxReagendas" placeholder="2"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OFICINAS -->
+      <div class="adm-sec">
+        <div class="adm-sec-title">🏢 Oficinas</div>
+        <div class="adm-sec-sub">Configura cada sede con sus horarios, correo, Telegram, fotos y cupo.</div>
+        <div id="admOficinas"></div>
+        <button class="adm-add-btn" onclick="addOficina()">+ Agregar oficina</button>
+      </div>
+
+      <button class="adm-save-btn" onclick="saveConfig()">💾 Guardar configuración</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════
+// CONFIGURACIÓN — todas las credenciales
+// viven en Railway (backend seguro)
+// ════════════════════════════════════════
+const API_URL = 'https://kmk-citlalli-production.up.railway.app';
+const STRIPE_PK = 'pk_test_51PLACEHOLDER'; // Solo la clave pública de Stripe es segura aquí
+const FROM_EMAIL = 'consultor@kmksm.mx';
+
+// ════════════════════════════════════════
+// CONFIG DEFAULT
+// ════════════════════════════════════════
+const DEF_CONFIG = {
+  precio: 1000,
+  diasMaximos: 60,
+  horasAntelacion: 24,
+  horasCancelacion: 48,
+  horasReagendar: 24,
+  maxReagendas: 2,
+  oficinas: [
+    {id:1,nombre:'Guadalajara',direccion:'C. Francisco Escudero López Portillo 1110, Jardines de los Historiadores, Guadalajara, Jal.',mapsUrl:'https://maps.google.com/?q=Jardines+de+los+Historiadores+Guadalajara',fotos:[],email:'guadalajara@kmksm.mx',telegramChatId:'-5216573409',horarios:['10:00','11:00','12:00','14:00','15:00','16:00','17:00'],diasDisponibles:[2,4],cupoMax:5},
+    {id:2,nombre:'Ciudad de México',direccion:'Dirección CDMX — configura en el panel admin',mapsUrl:'',fotos:[],email:'cdmx@kmksm.mx',telegramChatId:'-5216573409',horarios:['10:00','11:00','12:00','14:00','15:00','16:00'],diasDisponibles:[2,4],cupoMax:5}
+  ]
+};
+
+const ld=(k,d)=>{try{const s=localStorage.getItem(k);return s?JSON.parse(s):d;}catch(e){return d;}};
+const sv=(k,d)=>{try{localStorage.setItem(k,JSON.stringify(d));}catch(e){}};
+const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const fmtFecha=str=>{if(!str)return'—';const d=new Date(str+'T00:00:00');return d.toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long',year:'numeric'});};
+const fmtFechaCorta=str=>{if(!str)return'—';const d=new Date(str+'T00:00:00');return d.toLocaleDateString('es-MX',{day:'numeric',month:'short',year:'numeric'});};
+
+let config = ld('kmk_agenda_cfg', DEF_CONFIG);
+let reservas = ld('kmk_reservas', []);
+
+let state = {
+  step:1, demoTipo:null, oficina:null, fecha:null, hora:null,
+  currentMonth:new Date().getMonth(), currentYear:new Date().getFullYear(),
+  stripe:null, cardEl:null
+};
+
+// ════════════════════════════════════════
+// STEPS
+// ════════════════════════════════════════
+function goStep(n){
+  if(n===2&&!state.demoTipo)return;
+  if(n===3&&!state.oficina)return;
+  if(n===4&&(!state.fecha||!state.hora))return;
+  for(let i=1;i<=5;i++){const el=document.getElementById(`step${i}`);if(el)el.style.display='none';}
+  document.getElementById(`step${n}`).style.display='block';
+  state.step=n;
+  updateBar(n);
+  if(n===2)renderOficinas();
+  if(n===3){renderStep3Info();renderCalendar();}
+  if(n===4){updateResumen();if(state.demoTipo==='personalizada')initStripe();}
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateBar(a){
+  for(let i=1;i<=5;i++){
+    const c=document.getElementById(`sc${i}`),l=document.getElementById(`sl${i}`),line=document.getElementById(`line${i}`);
+    c.className='step-circle'+(i<a?' done':i===a?' active':'');
+    c.textContent=i<a?'✓':i;
+    l.className='step-label'+(i===a?' active':'');
+    if(line)line.className='step-line'+(i<a?' done':'');
+  }
+}
+
+// ════════════════════════════════════════
+// STEP 1
+// ════════════════════════════════════════
+function selectDemo(tipo){
+  state.demoTipo=tipo;
+  document.getElementById('demoGeneral').classList.toggle('selected',tipo==='general');
+  document.getElementById('demoPersonal').classList.toggle('selected',tipo==='personalizada');
+  document.getElementById('btnStep1').disabled=false;
+  document.getElementById('demoPrecioLabel').textContent=`💳 $${(config.precio||1000).toLocaleString()} MXN`;
+}
+
+// ════════════════════════════════════════
+// STEP 2
+// ════════════════════════════════════════
+function renderOficinas(){
+  document.getElementById('oficinasGrid').innerHTML=config.oficinas.map(o=>`
+    <div class="oficina-card${state.oficina?.id===o.id?' selected':''}" onclick="selectOficina(${o.id})">
+      <div class="oficina-hdr">
+        <div class="oficina-name">📍 ${o.nombre}</div>
+        <div class="oficina-check">${state.oficina?.id===o.id?'✓':''}</div>
+      </div>
+      <div class="oficina-body">
+        ${o.fotos?.length?`<div class="oficina-photos">${o.fotos.slice(0,3).map(f=>`<img src="${f}" class="oficina-photo" onerror="this.style.display='none'">`).join('')}</div>`:''}
+        <div class="oficina-addr">📌 ${o.direccion}</div>
+        ${o.mapsUrl?`<a href="${o.mapsUrl}" target="_blank" class="oficina-map">🗺️ Ver en Google Maps</a>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function selectOficina(id){
+  state.oficina=config.oficinas.find(o=>o.id===id);
+  state.fecha=null;state.hora=null;
+  renderOficinas();
+  document.getElementById('btnStep2').disabled=false;
+}
+
+// ════════════════════════════════════════
+// STEP 3
+// ════════════════════════════════════════
+function renderStep3Info(){
+  const h=config.horasAntelacion||24;
+  document.getElementById('step3Info').textContent=`Disponibilidad con mínimo ${h} horas de antelación · Solo días disponibles de la oficina`;
+}
+
+const MESES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const DSEM=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+
+function changeMonth(dir){
+  state.currentMonth+=dir;
+  if(state.currentMonth>11){state.currentMonth=0;state.currentYear++;}
+  if(state.currentMonth<0){state.currentMonth=11;state.currentYear--;}
+  renderCalendar();
+}
+
+function renderCalendar(){
+  document.getElementById('calTitle').textContent=`${MESES[state.currentMonth]} ${state.currentYear}`;
+  const g=document.getElementById('calGrid');
+  const headers=DSEM.map(d=>`<div class="cal-day-header">${d}</div>`).join('');
+  const firstDay=new Date(state.currentYear,state.currentMonth,1).getDay();
+  const daysInMonth=new Date(state.currentYear,state.currentMonth+1,0).getDate();
+  const now=new Date();
+  const minDate=new Date(now.getTime()+(config.horasAntelacion||24)*3600000);
+  const maxDate=new Date(now);maxDate.setDate(maxDate.getDate()+(config.diasMaximos||60));
+  minDate.setHours(0,0,0,0);maxDate.setHours(23,59,59,999);
+  const todayStr=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+
+  let days='';
+  for(let i=0;i<firstDay;i++)days+=`<div class="cal-day empty"></div>`;
+  for(let d=1;d<=daysInMonth;d++){
+    const date=new Date(state.currentYear,state.currentMonth,d);
+    date.setHours(0,0,0,0);
+    const dow=date.getDay();
+    const dateStr=`${state.currentYear}-${String(state.currentMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday=dateStr===todayStr;
+    const isBefore=date<minDate;
+    const isAfter=date>maxDate;
+    const isAvailable=(state.oficina?.diasDisponibles||[]).includes(dow);
+    const disabled=isBefore||isAfter||!isAvailable;
+    const hasSlots=!disabled;
+    const selected=state.fecha===dateStr;
+    let cls='cal-day';
+    if(isToday)cls+=' today';
+    if(disabled)cls+=' disabled';
+    if(hasSlots)cls+=' has-slots';
+    if(selected)cls+=' selected';
+    days+=`<div class="${cls}"${hasSlots?` onclick="selectFecha('${dateStr}')"`:''}>${d}</div>`;
+  }
+  g.innerHTML=headers+days;
+}
+
+function selectFecha(dateStr){
+  state.fecha=dateStr;state.hora=null;
+  document.getElementById('btnStep3').disabled=true;
+  renderCalendar();renderSlots(dateStr);
+}
+
+function renderSlots(dateStr){
+  const o=state.oficina;if(!o)return;
+  const horarios=o.horarios||[];
+  const cupo=o.cupoMax||5;
+  const now=new Date();
+  const minMs=(config.horasAntelacion||24)*3600000;
+  const reservasHoy=reservas.filter(r=>r.fecha===dateStr&&r.oficinaId===o.id&&r.estado!=='cancelada');
+  const fecha=new Date(dateStr+'T00:00:00');
+  document.getElementById('slotsTitle').textContent=`Horarios — ${fecha.toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long'})}`;
+  if(!horarios.length){document.getElementById('slotsGrid').innerHTML='<div style="color:var(--muted);font-size:13px;grid-column:1/-1">No hay horarios configurados.</div>';return;}
+  document.getElementById('slotsGrid').innerHTML=horarios.map(h=>{
+    const [hh,mm]=h.split(':').map(Number);
+    const slotDate=new Date(dateStr+'T'+h+':00');
+    const tooSoon=(slotDate.getTime()-now.getTime())<minMs;
+    const ocupados=reservasHoy.filter(r=>r.hora===h).length;
+    const disp=cupo-ocupados;
+    const full=disp<=0||tooSoon;
+    const sel=state.hora===h;
+    return `<div class="slot${full?' full':''}${sel?' selected':''}"${!full?` onclick="selectHora('${h}')"`:''}>${h}<div class="slot-spots">${full?(tooSoon?'Sin disponibilidad':`Sin lugares`):`${disp} lugar${disp!==1?'es':''}`}</div></div>`;
+  }).join('');
+}
+
+function selectHora(h){
+  state.hora=h;renderSlots(state.fecha);
+  document.getElementById('btnStep3').disabled=false;
+}
+
+// ════════════════════════════════════════
+// STEP 4
+// ════════════════════════════════════════
+function updateResumen(){
+  document.getElementById('rTipo').textContent=state.demoTipo==='general'?'👥 General (gratuita)':'⚙️ Personalizada';
+  document.getElementById('rOficina').textContent=state.oficina?.nombre||'—';
+  document.getElementById('rFecha').textContent=fmtFecha(state.fecha);
+  document.getElementById('rHora').textContent=state.hora||'—';
+  const gratis=state.demoTipo==='general';
+  document.getElementById('rTotal').textContent=gratis?'Gratis':`$${(config.precio||1000).toLocaleString()} MXN`;
+  document.getElementById('stripeSection').style.display=gratis?'none':'block';
+  document.getElementById('btnConfirmarTxt').textContent=gratis?'✅ Confirmar cita':`💳 Pagar $${(config.precio||1000).toLocaleString()} MXN y confirmar`;
+  // Políticas
+  const hC=config.horasCancelacion||48;
+  const hR=config.horasReagendar||24;
+  const maxR=config.maxReagendas||2;
+  const pol=document.getElementById('politicasCancela');
+  pol.style.display='block';
+  pol.innerHTML=`📋 <strong>Políticas:</strong> Puedes cancelar sin costo hasta <strong>${hC} horas</strong> antes. Puedes reagendar hasta <strong>${hR} horas</strong> antes.${!gratis?` La demo personalizada permite hasta <strong>${maxR} reagendamiento${maxR!==1?'s':''}</strong> con el mismo pago.`:''}`;
+}
+
+function initStripe(){
+  if(state.stripe)return;
+  try{
+    state.stripe=Stripe(STRIPE_PK);
+    const els=state.stripe.elements();
+    state.cardEl=els.create('card',{style:{base:{fontFamily:"'Nunito Sans',sans-serif",fontSize:'15px',color:'#1A1A3E','::placeholder':{color:'#6B7099'}}}});
+    state.cardEl.mount('#card-element');
+    state.cardEl.on('change',e=>document.getElementById('card-errors').textContent=e.error?e.error.message:'');
+  }catch(e){console.error('Stripe:',e);}
+}
+
+// ════════════════════════════════════════
+// CONFIRMAR
+// ════════════════════════════════════════
+async function confirmarCita(){
+  const nombre=document.getElementById('fNombre').value.trim();
+  const tel=document.getElementById('fTel').value.trim();
+  const email=document.getElementById('fEmail').value.trim();
+  const producto=document.getElementById('fProducto').value.trim();
+  const ciudad=document.getElementById('fCiudad').value.trim();
+  const canal=document.getElementById('fCanal').value;
+  const mensaje=document.getElementById('fMensaje').value.trim();
+  if(!nombre||!tel||!email){alert('Por favor completa nombre, teléfono y correo.');return;}
+
+  const btn=document.getElementById('btnConfirmar');
+  btn.disabled=true;
+  document.getElementById('btnConfirmarTxt').textContent='Procesando...';
+
+  try{
+    // Stripe si es pagada
+    let paymentMethodId=null;
+    if(state.demoTipo==='personalizada'){
+      if(!state.stripe||!state.cardEl)throw new Error('Stripe no listo');
+      const{error,paymentMethod}=await state.stripe.createPaymentMethod({type:'card',card:state.cardEl});
+      if(error){document.getElementById('card-errors').textContent=error.message;btn.disabled=false;document.getElementById('btnConfirmarTxt').textContent=`💳 Pagar $${config.precio.toLocaleString()} MXN y confirmar`;return;}
+      paymentMethodId=paymentMethod.id;
+    }
+
+    const reserva={
+      id:'KMK'+Date.now(),
+      tipo:state.demoTipo,
+      oficinaId:state.oficina.id,
+      oficinaNombre:state.oficina.nombre,
+      fecha:state.fecha,hora:state.hora,
+      nombre,tel,email,producto,ciudad,canal,mensaje,
+      estado:'confirmada',
+      pagado:state.demoTipo==='personalizada',
+      monto:state.demoTipo==='personalizada'?config.precio:0,
+      reagendas:0,
+      historial:[{accion:'confirmada',fecha:new Date().toISOString(),motivo:''}],
+      createdAt:new Date().toISOString()
+    };
+
+    reservas.push(reserva);
+    sv('kmk_reservas',reservas);
+
+    // Google Sheets + Notificaciones en paralelo
+    await Promise.allSettled([
+      guardarEnSheets(reserva),
+      guardarCliente(reserva),
+      notificarTelegram(reserva),
+      correoCliente(reserva),
+      correoEquipo(reserva)
+    ]);
+
+    mostrarExito(reserva);
+  }catch(e){
+    console.error(e);
+    alert('Error al procesar. Intenta de nuevo o contáctanos directamente.');
+    btn.disabled=false;
+    document.getElementById('btnConfirmarTxt').textContent=state.demoTipo==='general'?'✅ Confirmar cita':`💳 Pagar $${config.precio.toLocaleString()} MXN y confirmar`;
+  }
+}
+
+// ════════════════════════════════════════
+// GOOGLE SHEETS — via backend seguro
+// ════════════════════════════════════════
+async function guardarEnSheets(r){
+  try{
+    await fetch(`${API_URL}/api/agenda/cita`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(r)
+    });
+  }catch(e){console.error('Sheets Citas:',e);}
+}
+
+async function guardarCliente(r){
+  try{
+    await fetch(`${API_URL}/api/agenda/cliente`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(r)
+    });
+  }catch(e){console.error('Sheets Clientes:',e);}
+}
+
+// ════════════════════════════════════════
+// TELEGRAM — via backend seguro
+// ════════════════════════════════════════
+async function notificarTelegram(r){
+  try{
+    await fetch(`${API_URL}/api/agenda/notificar`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({reserva:r,chatId:state.oficina?.telegramChatId})
+    });
+  }catch(e){console.error('Telegram:',e);}
+}
+
+// ════════════════════════════════════════
+// CORREOS — via backend seguro
+// ════════════════════════════════════════
+async function correoCliente(r){
+  try{
+    await fetch(`${API_URL}/api/agenda/correo-cliente`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({reserva:r, oficinaDireccion:state.oficina?.direccion||''})
+    });
+  }catch(e){console.error('Correo cliente:',e);}
+}
+
+async function correoEquipo(r){
+  try{
+    await fetch(`${API_URL}/api/agenda/correo-equipo`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({reserva:r, emailEquipo:state.oficina?.email||FROM_EMAIL})
+    });
+  }catch(e){console.error('Correo equipo:',e);}
+}
+
+// ════════════════════════════════════════
+// COMPROBANTE
+// ════════════════════════════════════════
+let citaActual=null;
+
+function generarQR(texto){
+  // QR usando API pública de qrserver
+  return `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(texto)}&bgcolor=ffffff&color=2D2DB5&qzone=1`;
+}
+
+function htmlComprobante(r){
+  const fecha=fmtFecha(r.fecha);
+  const fechaCorta=fmtFechaCorta(r.fecha);
+  const ahora=new Date().toLocaleString('es-MX',{timeZone:'America/Mexico_City',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  const esGratis=r.tipo==='general';
+  const qrData=`KMK-CITA:${r.id}|${r.nombre}|${r.oficinaNombre}|${fechaCorta}|${r.hora}`;
+  const qrUrl=generarQR(qrData);
+
+  return `
+  <div style="font-family:Arial,Helvetica,sans-serif;max-width:520px;margin:0 auto;border:2px solid #2D2DB5;border-radius:16px;overflow:hidden;background:#fff">
+    <!-- HEADER -->
+    <div style="background:linear-gradient(135deg,#2D2DB5,#3838CC);padding:24px 28px;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px">Comprobante de cita</div>
+        <div style="font-size:22px;font-weight:900;color:#fff">KMK Snack Machines</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.7);margin-top:2px">kmksm.mx</div>
+      </div>
+      <div style="text-align:right">
+        <div style="background:${esGratis?'rgba(22,163,74,.2)':'rgba(249,115,22,.2)'};border:1px solid ${esGratis?'rgba(22,163,74,.5)':'rgba(249,115,22,.5)'};color:${esGratis?'#4ADE80':'#F97316'};font-size:11px;font-weight:800;padding:4px 12px;border-radius:100px;letter-spacing:1px;text-transform:uppercase;display:inline-block">
+          ${esGratis?'✓ GRATUITA':'✓ PAGADA'}
+        </div>
+      </div>
+    </div>
+
+    <!-- ESTADO -->
+    <div style="background:#F0FDF4;border-bottom:1px solid #DCF7E3;padding:12px 28px;display:flex;align-items:center;gap:10px">
+      <span style="font-size:20px">✅</span>
+      <div>
+        <div style="font-weight:800;color:#16a34a;font-size:14px">Cita confirmada</div>
+        <div style="font-size:12px;color:#6B7099">Generado el ${ahora}</div>
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div style="padding:24px 28px;display:flex;gap:20px;align-items:flex-start">
+      <div style="flex:1">
+        <!-- TIPO -->
+        <div style="background:#E8E8FF;border-radius:10px;padding:14px;margin-bottom:14px">
+          <div style="font-size:10px;color:#2D2DB5;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px">Tipo de demostración</div>
+          <div style="font-size:16px;font-weight:900;color:#1A1A3E">${r.tipo==='general'?'👥 Demo General':'⚙️ Demo Personalizada'}</div>
+          ${r.pagado?`<div style="font-size:13px;color:#16a34a;font-weight:700;margin-top:4px">💳 Pago confirmado: $${r.monto.toLocaleString()} MXN</div>`:''}
+        </div>
+
+        <!-- TABLA DATOS -->
+        <table style="width:100%;border-collapse:collapse">
+          <tr style="border-bottom:1px solid #E0E2F0">
+            <td style="padding:8px 0;color:#6B7099;font-size:12px;width:40%">📍 Oficina</td>
+            <td style="padding:8px 0;font-weight:700;font-size:13px;color:#1A1A3E">${r.oficinaNombre}</td>
+          </tr>
+          <tr style="border-bottom:1px solid #E0E2F0">
+            <td style="padding:8px 0;color:#6B7099;font-size:12px">📌 Dirección</td>
+            <td style="padding:8px 0;font-weight:600;font-size:12px;color:#1A1A3E">${state.oficina?.direccion||r.oficinaNombre}</td>
+          </tr>
+          <tr style="border-bottom:1px solid #E0E2F0">
+            <td style="padding:8px 0;color:#6B7099;font-size:12px">📅 Fecha</td>
+            <td style="padding:8px 0;font-weight:700;font-size:13px;color:#1A1A3E">${fecha}</td>
+          </tr>
+          <tr style="border-bottom:1px solid #E0E2F0">
+            <td style="padding:8px 0;color:#6B7099;font-size:12px">🕐 Hora</td>
+            <td style="padding:8px 0;font-weight:700;font-size:13px;color:#1A1A3E">${r.hora} hrs</td>
+          </tr>
+          <tr style="border-bottom:1px solid #E0E2F0">
+            <td style="padding:8px 0;color:#6B7099;font-size:12px">👤 Nombre</td>
+            <td style="padding:8px 0;font-weight:700;font-size:13px;color:#1A1A3E">${r.nombre}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 0;color:#6B7099;font-size:12px">📧 Correo</td>
+            <td style="padding:8px 0;font-weight:600;font-size:12px;color:#1A1A3E">${r.email}</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- QR -->
+      <div style="text-align:center;flex-shrink:0">
+        <img src="${qrUrl}" alt="QR" style="width:110px;height:110px;border-radius:8px;border:1px solid #E0E2F0;display:block">
+        <div style="font-size:9px;color:#6B7099;margin-top:6px;letter-spacing:1px;text-transform:uppercase">Escanear en oficina</div>
+      </div>
+    </div>
+
+    <!-- ID CITA -->
+    <div style="background:#F5F6FA;border-top:1px solid #E0E2F0;padding:12px 28px;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:10px;color:#6B7099;letter-spacing:2px;text-transform:uppercase">ID de cita</div>
+        <div style="font-family:monospace;font-weight:800;font-size:14px;color:#2D2DB5;letter-spacing:1px">${r.id}</div>
+      </div>
+      ${r.pagado?`<div style="background:rgba(22,163,74,.1);border:1px solid rgba(22,163,74,.3);border-radius:8px;padding:8px 14px;text-align:center">
+        <div style="font-size:10px;color:#6B7099;text-transform:uppercase;letter-spacing:1px">Descuento aplicable</div>
+        <div style="font-weight:800;color:#16a34a;font-size:14px">Al comprar tu máquina</div>
+      </div>`:''}
+    </div>
+
+    <!-- FOOTER -->
+    <div style="background:#1A1A3E;padding:14px 28px;text-align:center">
+      <div style="font-size:11px;color:rgba(255,255,255,.5)">KMK Snack Machines · consultor@kmksm.mx · WhatsApp 523311925116</div>
+      <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:3px">Presenta este comprobante (digital o impreso) al llegar a la oficina</div>
+    </div>
+  </div>`;
+}
+
+function mostrarExito(r){
+  citaActual=r;
+  goStep(5);
+  const hC=config.horasCancelacion||48;
+  const hR=config.horasReagendar||24;
+
+  // Renderizar comprobante
+  document.getElementById('comprobante').innerHTML=htmlComprobante(r);
+
+  // Políticas
+  document.getElementById('politicasSuccess').innerHTML=`⏰ Puedes cancelar sin costo hasta <strong>${hC} horas</strong> antes y reagendar hasta <strong>${hR} horas</strong> antes. Escríbenos a ${FROM_EMAIL} indicando tu ID de cita: <strong>${r.id}</strong>`;
+}
+
+function descargarPDF(){
+  if(!citaActual)return;
+  const win=window.open('','_blank','width=620,height=800');
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Comprobante ${citaActual.id}</title>
+  <style>
+    body{margin:20px;background:#f5f5f5;font-family:Arial,sans-serif}
+    @media print{body{margin:0;background:#fff}}
+    .no-print{margin-bottom:16px;display:flex;gap:10px}
+    .no-print button{background:#2D2DB5;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}
+    .no-print button.orange{background:#F97316}
+    @media print{.no-print{display:none}}
+  </style></head><body>
+  <div class="no-print">
+    <button onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+    <button class="orange" onclick="window.close()">✕ Cerrar</button>
+  </div>
+  ${htmlComprobante(citaActual)}
+  <script>setTimeout(()=>window.print(),500);<\/script>
+  </body></html>`);
+  win.document.close();
+}
+
+function imprimirComprobante(){
+  if(!citaActual)return;
+  descargarPDF();
+}
+
+async function reenviarCorreo(){
+  if(!citaActual)return;
+  const btn=document.getElementById('btnReenviar');
+  btn.disabled=true;btn.textContent='Enviando...';
+  try{
+    await correoCliente(citaActual);
+    btn.textContent='✅ Enviado';
+    setTimeout(()=>{btn.disabled=false;btn.textContent='📧 Reenviar por correo';},3000);
+  }catch(e){
+    btn.textContent='❌ Error';
+    setTimeout(()=>{btn.disabled=false;btn.textContent='📧 Reenviar por correo';},3000);
+  }
+}
+
+// ════════════════════════════════════════
+// REAGENDAR / CANCELAR
+// ════════════════════════════════════════
+let reagendaAction=null,reagendaReserva=null;
+
+function openReagenda(reservaId,accion){
+  reagendaReserva=reservas.find(r=>r.id===reservaId);
+  reagendaAction=accion;
+  if(!reagendaReserva)return;
+  const esCancelar=accion==='cancelar';
+  document.getElementById('reagendaTitulo').textContent=esCancelar?'❌ Cancelar cita':'📅 Reagendar cita';
+  document.getElementById('reagendaSub').textContent=esCancelar
+    ?'Por favor indica el motivo de la cancelación.'
+    :`Indica el motivo del reagendamiento. Reagendas usadas: ${reagendaReserva.reagendas||0} / ${config.maxReagendas||2}`;
+  document.getElementById('reagendaMotivo').value='';
+  document.getElementById('reagendaOv').classList.add('open');
+}
+
+function closeReagenda(){document.getElementById('reagendaOv').classList.remove('open');}
+
+async function confirmarReagenda(){
+  const motivo=document.getElementById('reagendaMotivo').value.trim();
+  if(!motivo){alert('Por favor indica el motivo.');return;}
+  if(!reagendaReserva)return;
+
+  const now=new Date();
+  const citaDate=new Date(reagendaReserva.fecha+'T'+reagendaReserva.hora);
+  const diffHoras=(citaDate-now)/3600000;
+
+  if(reagendaAction==='cancelar'&&diffHoras<(config.horasCancelacion||48)){
+    alert(`Solo puedes cancelar con ${config.horasCancelacion||48} horas de anticipación.`);return;
+  }
+  if(reagendaAction==='reagendar'){
+    if(diffHoras<(config.horasReagendar||24)){alert(`Solo puedes reagendar con ${config.horasReagendar||24} horas de anticipación.`);return;}
+    if(reagendaReserva.pagado&&(reagendaReserva.reagendas||0)>=(config.maxReagendas||2)){alert(`Has alcanzado el límite de ${config.maxReagendas||2} reagendamientos con este pago.`);return;}
+  }
+
+  // Actualizar reserva
+  const idx=reservas.findIndex(r=>r.id===reagendaReserva.id);
+  if(idx===-1)return;
+  if(reagendaAction==='cancelar'){
+    reservas[idx].estado='cancelada';
+  }else{
+    reservas[idx].reagendas=(reservas[idx].reagendas||0)+1;
+    reservas[idx].estado='pendiente-reagendar';
+  }
+  if(!reservas[idx].historial)reservas[idx].historial=[];
+  reservas[idx].historial.push({accion:reagendaAction,fecha:new Date().toISOString(),motivo});
+  sv('kmk_reservas',reservas);
+
+  // Notificar via backend seguro
+  const chatId=config.oficinas.find(o=>o.id===reagendaReserva.oficinaId)?.telegramChatId||'-5216573409';
+  await fetch(`${API_URL}/api/agenda/notificar`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({reserva:reagendaReserva,chatId,accion:reagendaAction,motivo})
+  }).catch(()=>{});
+
+  closeReagenda();
+  alert(reagendaAction==='cancelar'?'Cita cancelada. Te contactaremos pronto.':'Solicitud de reagendamiento enviada. El equipo te contactará para confirmar la nueva fecha.');
+}
+
+// ════════════════════════════════════════
+// ADMIN
+// ════════════════════════════════════════
+let aCfg={};
+function openAdm(){
+  aCfg=JSON.parse(JSON.stringify(ld('kmk_agenda_cfg',DEF_CONFIG)));
+  document.getElementById('aPrecio').value=aCfg.precio||1000;
+  document.getElementById('aDias').value=aCfg.diasMaximos||60;
+  document.getElementById('aAntelacion').value=aCfg.horasAntelacion||24;
+  document.getElementById('aCancelacion').value=aCfg.horasCancelacion||48;
+  document.getElementById('aReagendar').value=aCfg.horasReagendar||24;
+  document.getElementById('aMaxReagendas').value=aCfg.maxReagendas||2;
+  renderAdmOficinas();
+  document.getElementById('admOv').classList.add('open');
+}
+function closeAdm(){document.getElementById('admOv').classList.remove('open');}
+
+function renderAdmOficinas(){
+  document.getElementById('admOficinas').innerHTML=aCfg.oficinas.map((o,i)=>`
+    <div class="adm-row">
+      <button class="del-btn" onclick="aCfg.oficinas.splice(${i},1);renderAdmOficinas()">✕ Eliminar</button>
+      <div class="adm-row-grid">
+        <div class="full"><label class="al">Nombre de la oficina</label><input class="ai" value="${esc(o.nombre)}" oninput="aCfg.oficinas[${i}].nombre=this.value"></div>
+        <div class="full"><label class="al">Dirección completa</label><input class="ai" value="${esc(o.direccion)}" oninput="aCfg.oficinas[${i}].direccion=this.value"></div>
+        <div><label class="al">Link Google Maps</label><input class="ai" value="${esc(o.mapsUrl||'')}" oninput="aCfg.oficinas[${i}].mapsUrl=this.value" placeholder="https://maps.google.com/..."></div>
+        <div><label class="al">Cupo máximo / sesión</label><input class="ai" type="number" value="${o.cupoMax||5}" oninput="aCfg.oficinas[${i}].cupoMax=parseInt(this.value)||5"></div>
+        <div><label class="al">Correo notificaciones</label><input class="ai" type="email" value="${esc(o.email||'')}" oninput="aCfg.oficinas[${i}].email=this.value" placeholder="oficina@kmksm.mx"></div>
+        <div><label class="al">Telegram Chat ID</label><input class="ai" value="${esc(o.telegramChatId||'')}" oninput="aCfg.oficinas[${i}].telegramChatId=this.value" placeholder="-1001234567890"></div>
+        <div class="full">
+          <label class="al">Días disponibles</label>
+          <div class="dias-grid">${['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'].map((d,idx)=>`<button class="dia-btn${(o.diasDisponibles||[]).includes(idx)?' active':''}" onclick="toggleDia(${i},${idx},this)">${d}</button>`).join('')}</div>
+        </div>
+        <div class="full">
+          <label class="al">Horarios disponibles</label>
+          <div class="chip-list" id="horChips_${i}">${(o.horarios||[]).map((h,hi)=>`<div class="chip">${h}<button class="chip-del" onclick="rmHor(${i},${hi})">✕</button></div>`).join('')}</div>
+          <div class="chip-add-row"><input type="time" class="chip-input" id="horInput_${i}"><button class="chip-add-btn" onclick="addHor(${i})">+ Agregar</button></div>
+        </div>
+        <div class="full">
+          <label class="al">Fotos (URLs)</label>
+          <div class="chip-list" id="fotoChips_${i}">${(o.fotos||[]).map((f,fi)=>`<div class="chip"><span style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${f}</span><button class="chip-del" onclick="rmFoto(${i},${fi})">✕</button></div>`).join('')}</div>
+          <div class="chip-add-row"><input type="text" class="chip-input" id="fotoInput_${i}" placeholder="https://..."><button class="chip-add-btn" onclick="addFoto(${i})">+ Foto</button></div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleDia(i,dia,btn){
+  if(!aCfg.oficinas[i].diasDisponibles)aCfg.oficinas[i].diasDisponibles=[];
+  const arr=aCfg.oficinas[i].diasDisponibles;
+  const idx=arr.indexOf(dia);
+  if(idx===-1){arr.push(dia);btn.classList.add('active');}
+  else{arr.splice(idx,1);btn.classList.remove('active');}
+}
+function addHor(i){const inp=document.getElementById(`horInput_${i}`);const v=inp.value;if(!v)return;if(!aCfg.oficinas[i].horarios)aCfg.oficinas[i].horarios=[];if(!aCfg.oficinas[i].horarios.includes(v)){aCfg.oficinas[i].horarios.push(v);aCfg.oficinas[i].horarios.sort();}inp.value='';renderAdmOficinas();}
+function rmHor(i,hi){aCfg.oficinas[i].horarios.splice(hi,1);renderAdmOficinas();}
+function addFoto(i){const inp=document.getElementById(`fotoInput_${i}`);const v=inp.value.trim();if(!v)return;if(!aCfg.oficinas[i].fotos)aCfg.oficinas[i].fotos=[];aCfg.oficinas[i].fotos.push(v);inp.value='';renderAdmOficinas();}
+function rmFoto(i,fi){aCfg.oficinas[i].fotos.splice(fi,1);renderAdmOficinas();}
+function addOficina(){aCfg.oficinas.push({id:Date.now(),nombre:'Nueva Oficina',direccion:'',mapsUrl:'',fotos:[],email:'',telegramChatId:'-5216573409',horarios:['10:00','11:00','12:00','14:00','15:00'],diasDisponibles:[2,4],cupoMax:5});renderAdmOficinas();}
+
+function saveConfig(){
+  aCfg.precio=parseInt(document.getElementById('aPrecio').value)||1000;
+  aCfg.diasMaximos=parseInt(document.getElementById('aDias').value)||60;
+  aCfg.horasAntelacion=parseInt(document.getElementById('aAntelacion').value)||24;
+  aCfg.horasCancelacion=parseInt(document.getElementById('aCancelacion').value)||48;
+  aCfg.horasReagendar=parseInt(document.getElementById('aReagendar').value)||24;
+  aCfg.maxReagendas=parseInt(document.getElementById('aMaxReagendas').value)||2;
+  sv('kmk_agenda_cfg',aCfg);
+  config=JSON.parse(JSON.stringify(aCfg));
+  document.getElementById('demoPrecioLabel').textContent=`💳 $${config.precio.toLocaleString()} MXN`;
+  closeAdm();
+  const b=document.querySelector('.adm-save-btn');
+  b.textContent='✅ ¡Guardado!';
+  setTimeout(()=>b.textContent='💾 Guardar configuración',2000);
+}
+
+// INIT
+config=ld('kmk_agenda_cfg',DEF_CONFIG);
+</script>
+</body>
+</html>

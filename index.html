@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KMK Snack Machines — Inicia tu negocio de snacks con maquinaria profesional</title>
+<meta name="description" content="Produce churros, kibbeh y más con equipos diseñados para generar ingresos desde el primer día.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#2D2DB5;--blue2:#3838CC;--blue-l:#4F4FD9;--blue-xl:#E8E8FF;--orange:#F97316;--orange2:#EA6000;--white:#FFFFFF;--gray:#F5F6FA;--gray2:#EEF0F8;--text:#1A1A3E;--muted:#6B7099;--border:#E0E2F0}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--white);color:var(--text);font-family:'Nunito Sans',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+nav{position:fixed;top:0;left:0;right:0;z-index:900;background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:72px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 20px rgba(45,45,181,.08);transition:all .3s}
+nav.scrolled{box-shadow:0 4px 32px rgba(45,45,181,.12)}
+.nav-logo{display:flex;align-items:center;text-decoration:none}
+.nav-logo img{height:52px;width:auto;object-fit:contain}
+.nav-links{display:flex;gap:0;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;padding:0 18px;height:72px;display:flex;align-items:center;border-bottom:3px solid transparent;transition:all .2s}
+.nav-links a:hover{color:var(--blue);border-bottom-color:var(--blue)}
+.nav-cta{background:var(--orange);color:var(--white);font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;padding:11px 24px;border:none;cursor:pointer;text-decoration:none;border-radius:50px;transition:all .2s;white-space:nowrap;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(249,115,22,.3)}
+.nav-cta:hover{background:var(--orange2);transform:translateY(-1px)}
+.nav-burger{display:none;background:none;border:none;color:var(--text);font-size:26px;cursor:pointer}
+.hero{margin-top:72px;position:relative;overflow:hidden}
+.slider{position:relative;width:100%;height:580px}
+.slide{position:absolute;inset:0;display:flex;align-items:center;opacity:0;transition:opacity .8s ease;pointer-events:none}
+.slide.active{opacity:1;pointer-events:all}
+.slide-bg{position:absolute;inset:0;background-size:cover;background-position:center}
+.slide-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,13,60,.85) 0%,rgba(11,13,60,.5) 60%,transparent 100%)}
+.slide-content{position:relative;z-index:2;padding:0 60px;max-width:700px}
+.slide-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(249,115,22,.2);border:1px solid rgba(249,115,22,.5);color:var(--orange);font-family:'Nunito',sans-serif;font-weight:800;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:5px 14px;border-radius:100px;margin-bottom:20px}
+.slide-tag::before{content:'';width:6px;height:6px;background:var(--orange);border-radius:50%}
+.slide-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(30px,5vw,54px);line-height:1.1;color:var(--white);margin-bottom:16px}
+.slide-sub{font-size:17px;color:rgba(255,255,255,.85);line-height:1.6;margin-bottom:32px;font-weight:300;max-width:520px}
+.slide-btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn-hero-main{background:var(--orange);color:var(--white);font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;padding:14px 32px;border:none;cursor:pointer;border-radius:50px;display:inline-flex;align-items:center;gap:8px;transition:all .25s;box-shadow:0 6px 24px rgba(249,115,22,.4)}
+.btn-hero-main:hover{background:var(--orange2);transform:translateY(-2px)}
+.btn-hero-ghost{background:transparent;color:var(--white);font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;padding:13px 32px;border:2px solid rgba(255,255,255,.5);cursor:pointer;border-radius:50px;display:inline-flex;align-items:center;gap:8px;transition:all .25s}
+.btn-hero-ghost:hover{border-color:var(--white);background:rgba(255,255,255,.1)}
+.slider-dots{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10}
+.sdot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.4);border:none;cursor:pointer;transition:all .3s;padding:0}
+.sdot.active{background:var(--orange);width:28px;border-radius:5px}
+.slider-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.15);border:none;color:var(--white);width:44px;height:44px;border-radius:50%;font-size:20px;cursor:pointer;z-index:10;transition:all .2s;backdrop-filter:blur(4px)}
+.slider-arrow:hover{background:rgba(255,255,255,.3)}
+.slider-arrow.prev{left:20px}
+.slider-arrow.next{right:20px}
+section{padding:90px 40px}
+.container{max-width:1200px;margin:0 auto}
+.s-tag{display:inline-flex;align-items:center;gap:8px;background:var(--blue-xl);color:var(--blue);font-family:'Nunito',sans-serif;font-weight:800;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:5px 16px;border-radius:100px;margin-bottom:16px}
+.s-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(28px,5vw,46px);line-height:1.1;color:var(--text);margin-bottom:16px}
+.s-title em{font-style:normal;color:var(--blue)}
+.s-title .ora{font-style:normal;color:var(--orange)}
+.s-sub{font-size:17px;color:var(--muted);max-width:580px;line-height:1.7;font-weight:300}
+.text-center{text-align:center}
+.text-center .s-sub{margin:0 auto}
+.btn-main{background:var(--orange);color:var(--white);font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;padding:14px 32px;border:none;cursor:pointer;border-radius:50px;display:inline-flex;align-items:center;gap:8px;transition:all .25s;box-shadow:0 4px 16px rgba(249,115,22,.3);text-decoration:none}
+.btn-main:hover{background:var(--orange2);transform:translateY(-2px)}
+.btn-blue{background:var(--blue);color:var(--white);font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;padding:14px 32px;border:none;cursor:pointer;border-radius:50px;display:inline-flex;align-items:center;gap:8px;transition:all .25s;text-decoration:none}
+.btn-blue:hover{background:var(--blue2);transform:translateY(-2px)}
+.btn-outline-blue{background:transparent;color:var(--blue);font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;padding:12px 28px;border:2px solid var(--blue);cursor:pointer;border-radius:50px;display:inline-flex;align-items:center;gap:8px;transition:all .25s;text-decoration:none}
+.btn-outline-blue:hover{background:var(--blue);color:var(--white)}
+.prod-s{background:var(--gray)}
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px;margin-top:48px}
+.prod-card{background:var(--white);border-radius:16px;padding:22px 16px;text-align:center;border:2px solid transparent;transition:all .3s;cursor:pointer}
+.prod-card:hover{border-color:var(--orange);transform:translateY(-4px);box-shadow:0 12px 32px rgba(249,115,22,.15)}
+.prod-img{width:72px;height:72px;object-fit:cover;border-radius:12px;margin:0 auto 12px;display:block}
+.prod-img-ph{width:72px;height:72px;background:var(--gray2);border-radius:12px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:30px}
+.prod-name{font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;color:var(--text)}
+.prod-desc{font-size:12px;color:var(--muted);margin-top:4px}
+.maq-s{background:var(--white)}
+.maq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px;margin-top:48px}
+.mcard{background:var(--white);border:2px solid var(--border);border-radius:20px;overflow:hidden;transition:all .3s;display:flex;flex-direction:column}
+.mcard:hover{border-color:var(--blue);box-shadow:0 16px 48px rgba(45,45,181,.12);transform:translateY(-4px)}
+.mcard-media{position:relative;background:var(--gray2);overflow:hidden}
+.mcard-img{width:100%;height:260px;object-fit:cover;display:block;transition:transform .5s}
+.mcard-img-ph{width:100%;height:260px;display:flex;align-items:center;justify-content:center;font-size:72px;background:linear-gradient(135deg,var(--blue-xl),var(--gray2))}
+.mcard:hover .mcard-img{transform:scale(1.04)}
+.mcard-tag{position:absolute;top:14px;left:14px;background:var(--orange);color:var(--white);font-family:'Nunito',sans-serif;font-weight:800;font-size:10px;letter-spacing:2px;padding:4px 12px;border-radius:100px;text-transform:uppercase}
+.mcard-body{padding:24px;flex:1;display:flex;flex-direction:column;gap:12px}
+.mcard-name{font-family:'Nunito',sans-serif;font-weight:900;font-size:19px;color:var(--text);line-height:1.2}
+.mcard-desc{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;flex:1}
+.mcard-specs{display:flex;flex-wrap:wrap;gap:6px}
+.mspec{font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;color:var(--blue);background:var(--blue-xl);padding:4px 12px;border-radius:100px}
+.mcard-cta{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.mcard-btn-main{display:block;width:100%;background:var(--orange);color:var(--white);font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;padding:12px;text-align:center;border:none;cursor:pointer;border-radius:50px;transition:all .2s}
+.mcard-btn-main:hover{background:var(--orange2)}
+.mcard-btn-sec{display:block;width:100%;background:transparent;color:var(--blue);font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;padding:11px;text-align:center;border:2px solid var(--blue);cursor:pointer;border-radius:50px;transition:all .2s}
+.mcard-btn-sec:hover{background:var(--blue);color:var(--white)}
+.no-maq{text-align:center;padding:80px;color:var(--muted);grid-column:1/-1}
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1100;backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px}
+.modal-ov.open{display:flex;animation:fadeIn .25s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-box{background:var(--white);border-radius:20px;width:100%;max-width:900px;max-height:90vh;overflow-y:auto;display:flex;flex-direction:column;box-shadow:0 32px 80px rgba(0,0,0,.2)}
+.modal-hdr{padding:20px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--white);z-index:2;border-radius:20px 20px 0 0}
+.modal-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;color:var(--text)}
+.modal-x{background:var(--gray);border:none;color:var(--muted);width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-x:hover{background:var(--border)}
+.modal-body{padding:28px;display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.modal-media iframe{width:100%;aspect-ratio:16/9;border:none;border-radius:12px}
+.modal-media img{width:100%;border-radius:12px;object-fit:cover;max-height:300px}
+.modal-media-ph{width:100%;height:260px;background:var(--gray2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:72px}
+.modal-desc{font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:16px;font-weight:300}
+.modal-specs-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;letter-spacing:2px;color:var(--blue);text-transform:uppercase;margin-bottom:10px}
+.modal-specs{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.modal-specs li{font-size:13px;color:var(--text);display:flex;align-items:flex-start;gap:10px}
+.modal-specs li::before{content:'✓';color:var(--orange);font-weight:900;flex-shrink:0}
+.modal-cta-btn{display:block;width:100%;background:var(--orange);color:var(--white);font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;padding:14px;text-align:center;border:none;cursor:pointer;border-radius:50px;transition:all .2s}
+.modal-cta-btn:hover{background:var(--orange2)}
+.how-s{background:var(--blue);position:relative;overflow:hidden}
+.how-s::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.04) 1px,transparent 1px);background-size:32px 32px}
+.how-s .s-title{color:var(--white)}
+.how-s .s-sub{color:rgba(255,255,255,.7)}
+.how-s .s-tag{background:rgba(255,255,255,.15);color:var(--white)}
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2px;margin-top:56px;position:relative;z-index:1}
+.step{background:rgba(255,255,255,.06);padding:36px 28px;position:relative;transition:background .3s;border:1px solid rgba(255,255,255,.08)}
+.step:hover{background:rgba(255,255,255,.1)}
+.step-num{font-family:'Nunito',sans-serif;font-weight:900;font-size:64px;color:rgba(249,115,22,.15);line-height:1;position:absolute;top:16px;right:20px}
+.step-icon{font-size:36px;margin-bottom:16px;display:block}
+.step-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:17px;color:var(--white);margin-bottom:8px}
+.step-desc{font-size:13px;color:rgba(255,255,255,.65);line-height:1.7;font-weight:300}
+.pot-s{background:var(--gray)}
+.pot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-top:48px}
+.pot-card{background:var(--white);border-radius:16px;padding:28px;border-left:4px solid var(--orange);transition:all .3s;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.pot-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.1)}
+.pot-icon{font-size:32px;margin-bottom:14px;display:block}
+.pot-num{font-family:'Nunito',sans-serif;font-weight:900;font-size:40px;color:var(--blue);line-height:1;margin-bottom:4px}
+.pot-label{font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;color:var(--text);margin-bottom:6px}
+.pot-desc{font-size:13px;color:var(--muted);line-height:1.6;font-weight:300}
+.filter-s{background:var(--blue-xl);border-top:2px solid var(--border);border-bottom:2px solid var(--border);padding:60px 40px}
+.filter-box{background:var(--white);border-radius:20px;padding:48px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;box-shadow:0 8px 32px rgba(45,45,181,.1);border:2px solid var(--border)}
+.filter-badge{display:inline-flex;align-items:center;gap:6px;background:var(--blue-xl);color:var(--blue);font-family:'Nunito',sans-serif;font-weight:800;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:100px;margin-bottom:12px}
+.filter-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:26px;color:var(--text);margin-bottom:10px}
+.filter-sub{font-size:16px;color:var(--muted);line-height:1.6;font-weight:300}
+.test-s{background:var(--white)}
+.test-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-top:48px}
+.tcard{background:var(--gray);border-radius:16px;overflow:hidden;transition:all .3s}
+.tcard:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.1)}
+.tcard-video{width:100%;aspect-ratio:16/9;position:relative;overflow:hidden}
+.tcard-video iframe{width:100%;height:100%;border:none}
+.tcard-video-ph{width:100%;height:100%;background:linear-gradient(135deg,var(--blue-xl),var(--gray2));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer}
+.tcard-play{width:52px;height:52px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--white);transition:transform .2s}
+.tcard-video-ph:hover .tcard-play{transform:scale(1.1)}
+.tcard-ph-text{font-family:'Nunito',sans-serif;font-weight:700;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.tcard-body{padding:20px}
+.tcard-stars{color:var(--orange);font-size:16px;margin-bottom:8px}
+.tcard-quote{font-size:14px;color:var(--text);line-height:1.7;font-style:italic;margin-bottom:12px;font-weight:300}
+.tcard-author{display:flex;align-items:center;gap:10px}
+.tcard-av{width:36px;height:36px;background:var(--blue-xl);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:800;color:var(--blue);flex-shrink:0}
+.tcard-name{font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;color:var(--text)}
+.tcard-loc{font-size:11px;color:var(--muted)}
+.trust-s{background:var(--gray)}
+.trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:48px}
+.trust-card{background:var(--white);border-radius:16px;padding:28px 20px;text-align:center;border:2px solid var(--border);transition:all .3s}
+.trust-card:hover{border-color:var(--blue);transform:translateY(-3px)}
+.trust-icon{font-size:40px;margin-bottom:14px;display:block}
+.trust-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;color:var(--text);margin-bottom:6px}
+.trust-desc{font-size:13px;color:var(--muted);line-height:1.6;font-weight:300}
+.cta-final{background:linear-gradient(135deg,var(--blue) 0%,var(--blue2) 100%);position:relative;overflow:hidden;text-align:center}
+.cta-final::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.04) 1px,transparent 1px);background-size:48px 48px}
+.cta-final-inner{position:relative;z-index:1;max-width:700px;margin:0 auto}
+.cta-final .s-title{color:var(--white)}
+.cta-final-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn-white{background:var(--white);color:var(--blue);font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;padding:14px 32px;border:none;cursor:pointer;border-radius:50px;display:inline-flex;align-items:center;gap:8px;transition:all .25s;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.2)}
+.btn-orange-outline{background:transparent;color:var(--white);font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;padding:13px 32px;border:2px solid rgba(255,255,255,.5);cursor:pointer;border-radius:50px;display:inline-flex;align-items:center;gap:8px;transition:all .25s}
+.btn-orange-outline:hover{border-color:var(--white);background:rgba(255,255,255,.1)}
+.cot-s{background:var(--white)}
+.cot-layout{display:grid;grid-template-columns:1fr 1.2fr;gap:64px;align-items:start;margin-top:48px}
+.cot-info{display:flex;flex-direction:column;gap:20px}
+.cot-intro{font-size:16px;color:var(--muted);line-height:1.8;font-weight:300}
+.cot-item{display:flex;gap:14px;align-items:flex-start;padding:16px;background:var(--gray);border-radius:12px}
+.cot-ic{font-size:22px;flex-shrink:0}
+.cot-il{font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;color:var(--blue);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px}
+.cot-iv{font-size:14px;color:var(--text);font-weight:600}
+.cot-form{background:var(--gray);border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:14px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fg{display:flex;flex-direction:column;gap:6px}
+.fl{font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:var(--blue);letter-spacing:2px;text-transform:uppercase}
+.fi,.fsel,.fta{background:var(--white);border:2px solid var(--border);color:var(--text);font-family:'Nunito Sans',sans-serif;font-size:14px;padding:12px 16px;outline:none;width:100%;transition:border-color .2s;border-radius:10px;appearance:none}
+.fi:focus,.fsel:focus,.fta:focus{border-color:var(--blue)}
+.fi::placeholder,.fta::placeholder{color:var(--muted);opacity:.7}
+.fta{min-height:100px;resize:vertical}
+.fsub{background:var(--orange);color:var(--white);font-family:'Nunito',sans-serif;font-weight:800;font-size:16px;padding:15px;border:none;cursor:pointer;border-radius:50px;transition:all .2s;width:100%;margin-top:4px}
+.fsub:hover{background:var(--orange2)}
+.fsub:disabled{opacity:.6;cursor:not-allowed}
+.fok{display:none;padding:16px;background:rgba(34,197,94,.08);border:2px solid rgba(34,197,94,.25);color:#16a34a;font-size:14px;text-align:center;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:700}
+footer{background:var(--blue);color:var(--white);padding:56px 40px 36px}
+.ft-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:56px;max-width:1200px;margin:0 auto 44px}
+.ft-logo img{height:52px;width:auto;filter:brightness(0) invert(1);margin-bottom:14px}
+.ft-desc{font-size:14px;color:rgba(255,255,255,.6);max-width:280px;line-height:1.7;font-weight:300}
+.ft-col h4{font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:var(--orange);letter-spacing:3px;text-transform:uppercase;margin-bottom:18px}
+.ft-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.ft-col ul li a{font-size:14px;color:rgba(255,255,255,.6);text-decoration:none;transition:color .2s;font-weight:300}
+.ft-col ul li a:hover{color:var(--white)}
+.ft-bot{max-width:1200px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.ft-bot p{font-size:12px;color:rgba(255,255,255,.4)}
+.cw{position:fixed;bottom:28px;right:28px;z-index:800;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.cw-panel{width:360px;background:var(--white);border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.2);display:none;flex-direction:column}
+.cw-panel.open{display:flex;animation:slideUp .3s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.cw-hdr{background:var(--blue);padding:16px 20px;display:flex;align-items:center;justify-content:space-between}
+.cw-hdr-l{display:flex;align-items:center;gap:12px}
+.cw-av{width:40px;height:40px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;border:2px solid rgba(255,255,255,.3)}
+.cw-name{font-family:'Nunito',sans-serif;font-weight:800;font-size:16px;color:var(--white)}
+.cw-on{font-size:11px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:5px;margin-top:1px}
+.cw-on::before{content:'';width:6px;height:6px;background:#4ADE80;border-radius:50%;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.cw-x{background:rgba(255,255,255,.15);border:none;color:var(--white);width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.cw-x:hover{background:rgba(255,255,255,.25)}
+.cw-msgs{padding:18px;display:flex;flex-direction:column;gap:10px;max-height:300px;overflow-y:auto;scrollbar-width:thin;background:var(--gray)}
+.wm{max-width:85%;padding:11px 15px;font-size:13px;line-height:1.5}
+.wm-b{background:var(--white);border:1px solid var(--border);color:var(--text);align-self:flex-start;border-radius:4px 16px 16px 16px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.wm-u{background:var(--blue);color:var(--white);align-self:flex-end;border-radius:16px 4px 16px 16px}
+.cw-typing{display:none;gap:4px;padding:11px 15px;background:var(--white);border:1px solid var(--border);border-radius:4px 16px 16px 16px;width:fit-content;align-self:flex-start}
+.cw-dot{width:7px;height:7px;background:var(--muted);border-radius:50%;animation:dotB 1.4s infinite}
+.cw-dot:nth-child(2){animation-delay:.2s}
+.cw-dot:nth-child(3){animation-delay:.4s}
+@keyframes dotB{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-6px);opacity:1}}
+.cw-quick{padding:10px 18px 0;display:flex;flex-wrap:wrap;gap:6px;background:var(--gray)}
+.cw-qbtn{background:var(--white);border:1px solid var(--border);color:var(--blue);font-family:'Nunito',sans-serif;font-weight:700;font-size:11px;padding:6px 12px;border-radius:100px;cursor:pointer;transition:all .2s}
+.cw-qbtn:hover{background:var(--blue);color:var(--white);border-color:var(--blue)}
+.cw-ir{border-top:1px solid var(--border);padding:12px 16px;display:flex;gap:8px;background:var(--white)}
+.cw-i{flex:1;background:var(--gray);border:1px solid var(--border);color:var(--text);font-family:'Nunito Sans',sans-serif;font-size:13px;padding:10px 14px;border-radius:50px;outline:none;transition:border-color .2s}
+.cw-i:focus{border-color:var(--blue);background:var(--white)}
+.cw-snd{background:var(--orange);border:none;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--white);transition:all .2s;flex-shrink:0}
+.cw-snd:hover{background:var(--orange2)}
+.cw-btn{width:62px;height:62px;background:var(--blue);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;box-shadow:0 8px 32px rgba(45,45,181,.4);transition:all .2s;position:relative}
+.cw-btn:hover{transform:scale(1.08)}
+.cw-badge{position:absolute;top:-3px;right:-3px;width:20px;height:20px;background:var(--orange);border-radius:50%;font-size:11px;font-weight:800;color:var(--white);display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;border:2px solid var(--white)}
+.adm-trig{position:fixed;bottom:28px;left:28px;background:var(--blue);color:var(--white);font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;letter-spacing:1px;padding:10px 20px;border-radius:50px;cursor:pointer;border:none;z-index:700;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(45,45,181,.3);transition:all .2s}
+.adm-trig:hover{background:var(--blue2)}
+.adm-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px}
+.adm-ov.open{display:flex;animation:fadeIn .2s}
+.adm-box{background:var(--white);border-radius:20px;width:100%;max-width:920px;max-height:92vh;overflow-y:auto;display:flex;flex-direction:column;box-shadow:0 32px 80px rgba(0,0,0,.2)}
+.adm-hdr{padding:20px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--white);z-index:2;border-radius:20px 20px 0 0}
+.adm-htitle{font-family:'Nunito',sans-serif;font-weight:900;font-size:22px;color:var(--text)}
+.adm-htitle em{color:var(--orange);font-style:normal}
+.adm-x{background:var(--gray);border:none;color:var(--muted);width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.adm-x:hover{background:var(--border)}
+.adm-body{padding:28px;display:flex;flex-direction:column;gap:28px}
+.adm-sec{background:var(--gray);border-radius:16px;padding:24px}
+.adm-sec-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:16px;color:var(--text);margin-bottom:4px}
+.adm-sec-sub{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.5}
+.arow{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative;margin-bottom:10px}
+.arow .full{grid-column:1/-1}
+.al{font-family:'Nunito',sans-serif;font-size:10px;font-weight:800;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;display:block}
+.ai,.ata{background:var(--gray);border:1px solid var(--border);color:var(--text);font-family:'Nunito Sans',sans-serif;font-size:13px;padding:10px 12px;outline:none;width:100%;transition:border-color .2s;border-radius:8px}
+.ai:focus,.ata:focus{border-color:var(--blue)}
+.ata{min-height:70px;resize:vertical}
+.del-btn{position:absolute;top:12px;right:12px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#EF4444;font-family:'Nunito',sans-serif;font-weight:700;font-size:11px;padding:4px 10px;border-radius:50px;cursor:pointer}
+.del-btn:hover{background:rgba(239,68,68,.2)}
+.adm-add-btn{background:transparent;border:2px dashed var(--border);color:var(--blue);font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;padding:12px;width:100%;border-radius:12px;cursor:pointer;transition:all .2s;margin-bottom:0}
+.adm-add-btn:hover{border-color:var(--blue);background:var(--blue-xl)}
+.adm-save-btn{background:var(--orange);color:var(--white);font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;padding:14px;border:none;border-radius:50px;cursor:pointer;transition:all .2s;width:100%}
+.adm-save-btn:hover{background:var(--orange2)}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:960px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .nav-burger{display:block}
+  section{padding:72px 20px}
+  .slider{height:auto;min-height:500px}
+  .slide-content{padding:0 24px;max-width:100%}
+  .cot-layout{grid-template-columns:1fr;gap:40px}
+  .ft-top{grid-template-columns:1fr 1fr;gap:36px}
+  .frow{grid-template-columns:1fr}
+  .filter-box{grid-template-columns:1fr;gap:24px;padding:28px}
+  .cw{bottom:16px;right:16px}
+  .cw-panel{width:calc(100vw - 32px)}
+  .adm-trig{display:none}
+  .maq-grid{grid-template-columns:1fr}
+  .arow{grid-template-columns:1fr}
+  .modal-body{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .slide-title{font-size:26px}
+  .slide-btns{flex-direction:column}
+  .cta-final-btns{flex-direction:column;align-items:center}
+  .prod-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="#" class="nav-logo"><img src="logotk.png" alt="KMK Snack Machines"></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#maquinas">Máquinas</a></li>
+    <li><a href="#como-funciona">Cómo funciona</a></li>
+    <li><a href="#testimonios">Casos de éxito</a></li>
+    <li><a href="#cotizar">Asesoría</a></li>
+  </ul>
+  <a href="agendar.html" class="nav-cta" style="margin-right:8px;background:var(--blue);box-shadow:0 4px 16px rgba(45,45,181,.3)" >📅 Agendar demo</a>
+  <a href="#" class="nav-cta" onclick="openChat();return false;">💬 Hablar con asesor</a>
+  <button class="nav-burger" onclick="toggleNav()">☰</button>
+</nav>
+
+<div class="hero"><div class="slider" id="heroSlider"></div></div>
+
+<div style="background:var(--blue);padding:12px 0;overflow:hidden;white-space:nowrap">
+  <div id="tickerTrack" style="display:inline-flex;animation:tickerA 30s linear infinite"></div>
+</div>
+<style>@keyframes tickerA{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}</style>
+
+<section class="prod-s" id="productos">
+  <div class="container">
+    <div class="text-center">
+      <div class="s-tag reveal">¿Qué puedes producir?</div>
+      <h2 class="s-title reveal">Más de <em>100 tipos</em> de snacks</h2>
+      <p class="s-sub reveal">Salados, dulces, rellenos o simples. Una sola máquina KMK transforma tu negocio.</p>
+    </div>
+    <div class="prod-grid" id="prodGrid"></div>
+    <div style="text-align:center;margin-top:48px" class="reveal">
+      <button class="btn-main" onclick="openChat()">🍿 ¿Qué puedo producir con mi presupuesto?</button>
+    </div>
+  </div>
+</section>
+
+<section class="maq-s" id="maquinas">
+  <div class="container">
+    <div class="s-tag reveal">Catálogo</div>
+    <h2 class="s-title reveal">Nuestras <em>Máquinas</em></h2>
+    <p class="s-sub reveal">Sin precios en pantalla — cada negocio es diferente. Recibe tu recomendación personalizada.</p>
+    <div class="maq-grid" id="maqGrid"></div>
+  </div>
+</section>
+
+<section class="how-s" id="como-funciona">
+  <div class="container">
+    <div class="text-center">
+      <div class="s-tag reveal">El proceso</div>
+      <h2 class="s-title reveal">Inicia tu negocio <em>en 4 pasos</em></h2>
+      <p class="s-sub reveal" style="margin:0 auto">Te acompañamos desde cero hasta producir snacks profesionales.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step reveal"><div class="step-num">01</div><span class="step-icon">💬</span><div class="step-title">Habla con Citlalli</div><p class="step-desc">Nuestro asistente IA te hace las preguntas clave para recomendarte la máquina ideal para tu proyecto.</p></div>
+      <div class="step reveal"><div class="step-num">02</div><span class="step-icon">🎯</span><div class="step-title">Asesoría personalizada</div><p class="step-desc">Un experto KMK te contacta con una propuesta a tu medida según tu capacidad de producción.</p></div>
+      <div class="step reveal"><div class="step-num">03</div><span class="step-icon">⚙️</span><div class="step-title">Instalación y capacitación</div><p class="step-desc">Instalamos tu equipo y te capacitamos para producir desde el primer día. Recetario completo incluido.</p></div>
+      <div class="step reveal"><div class="step-num">04</div><span class="step-icon">💰</span><div class="step-title">Produce y genera ingresos</div><p class="step-desc">Tu máquina trabaja, tú vendes. Con soporte continuo de KMK para que nunca pares de producir.</p></div>
+    </div>
+    <div style="text-align:center;margin-top:48px" class="reveal">
+      <button class="btn-white" onclick="openChat()">🚀 Quiero iniciar mi negocio ahora</button>
+    </div>
+  </div>
+</section>
+
+<section class="pot-s">
+  <div class="container">
+    <div class="text-center">
+      <div class="s-tag reveal">Potencial de negocio</div>
+      <h2 class="s-title reveal">Números que <span class="ora">hablan solos</span></h2>
+      <p class="s-sub reveal" style="margin:0 auto">Con una máquina KMK tu capacidad de producción es inmediata y escalable.</p>
+    </div>
+    <div class="pot-grid">
+      <div class="pot-card reveal"><span class="pot-icon">⚡</span><div class="pot-num">12,000</div><div class="pot-label">Snacks por hora</div><p class="pot-desc">La línea Premium 15.0 produce hasta 12 mil piezas por hora de forma continua.</p></div>
+      <div class="pot-card reveal"><span class="pot-icon">🍿</span><div class="pot-num">+100</div><div class="pot-label">Tipos de snacks</div><p class="pot-desc">Salados, dulces, rellenos — una máquina, cientos de posibilidades.</p></div>
+      <div class="pot-card reveal"><span class="pot-icon">🌎</span><div class="pot-num">CE</div><div class="pot-label">Certificación Europea</div><p class="pot-desc">Calidad y seguridad alimentaria bajo los más estrictos estándares internacionales.</p></div>
+      <div class="pot-card reveal"><span class="pot-icon">📦</span><div class="pot-num">7–240g</div><div class="pot-label">Rango de producción</div><p class="pot-desc">Desde bocados pequeños hasta snacks de tamaño completo para cualquier mercado.</p></div>
+    </div>
+    <div style="text-align:center;margin-top:48px" class="reveal">
+      <button class="btn-main" onclick="openChat()">📊 Calcular mi potencial de ingresos</button>
+    </div>
+  </div>
+</section>
+
+<section class="filter-s">
+  <div class="container">
+    <div class="filter-box reveal">
+      <div>
+        <div class="filter-badge">⚠️ Importante</div>
+        <div class="filter-title">Este equipo es para personas que van en serio</div>
+        <p class="filter-sub">Nuestras máquinas están diseñadas para emprendedores y productores que buscan <strong>iniciar o escalar un negocio de snacks</strong>. Si estás listo para invertir en tu futuro, con gusto te asesoramos sin compromiso.</p>
+      </div>
+      <div style="flex-shrink:0;display:flex;flex-direction:column;gap:12px;align-items:center">
+        <button class="btn-main" onclick="openChat()" style="white-space:nowrap">Sí, estoy listo →</button>
+        <button class="btn-outline-blue" onclick="openChat()" style="white-space:nowrap">Tengo dudas</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="test-s" id="testimonios">
+  <div class="container">
+    <div class="text-center">
+      <div class="s-tag reveal">Casos de éxito</div>
+      <h2 class="s-title reveal">Lo que dicen <em>nuestros clientes</em></h2>
+      <p class="s-sub reveal" style="margin:0 auto">Emprendedores reales que transformaron su vida con KMK.</p>
+    </div>
+    <div class="test-grid" id="testGrid"></div>
+    <div style="text-align:center;margin-top:40px" class="reveal">
+      <button class="btn-blue" onclick="openChat()">💬 Quiero resultados como estos</button>
+    </div>
+  </div>
+</section>
+
+<section class="trust-s">
+  <div class="container">
+    <div class="text-center">
+      <div class="s-tag reveal">Por qué KMK</div>
+      <h2 class="s-title reveal">Tu inversión está <em>protegida</em></h2>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-card reveal"><span class="trust-icon">🛡️</span><div class="trust-title">Garantía incluida</div><p class="trust-desc">Todas nuestras máquinas incluyen garantía de fabricante y respaldo técnico KMK.</p></div>
+      <div class="trust-card reveal"><span class="trust-icon">🎓</span><div class="trust-title">Capacitación completa</div><p class="trust-desc">Te enseñamos a operar y mantener tu equipo para sacarle el máximo desde el día 1.</p></div>
+      <div class="trust-card reveal"><span class="trust-icon">🚚</span><div class="trust-title">Envío a toda la República</div><p class="trust-desc">Enviamos tu máquina a cualquier punto de México con seguimiento y asistencia.</p></div>
+      <div class="trust-card reveal"><span class="trust-icon">📞</span><div class="trust-title">Soporte post-venta</div><p class="trust-desc">Nunca estás solo. Equipo disponible para resolver dudas técnicas o comerciales.</p></div>
+      <div class="trust-card reveal"><span class="trust-icon">📋</span><div class="trust-title">+100 recetas incluidas</div><p class="trust-desc">Recetario completo para producir snacks variados desde el primer día.</p></div>
+      <div class="trust-card reveal"><span class="trust-icon">🏅</span><div class="trust-title">Certificación Europea</div><p class="trust-desc">Equipos que cumplen los más altos estándares de calidad y seguridad alimentaria.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-final">
+  <div class="container">
+    <div class="cta-final-inner reveal">
+      <div class="s-tag" style="background:rgba(255,255,255,.15);color:var(--white);margin:0 auto 20px;width:fit-content">¿Listo para empezar?</div>
+      <h2 class="s-title" style="color:var(--white)">Inicia tu negocio de snacks <span class="ora">hoy mismo</span></h2>
+      <p class="s-sub" style="color:rgba(255,255,255,.75);margin:0 auto 36px">Habla con Citlalli ahora — en minutos sabrás qué máquina es ideal para ti.</p>
+      <div class="cta-final-btns">
+        <button class="btn-white" onclick="openChat()">✨ Recibir recomendación personalizada</button>
+        <button class="btn-orange-outline" onclick="openChat()">💬 Hablar con un experto</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cot-s" id="cotizar">
+  <div class="container">
+    <div class="s-tag reveal">Contacto directo</div>
+    <h2 class="s-title reveal">Solicita tu <em>Asesoría</em></h2>
+    <div class="cot-layout">
+      <div class="cot-info reveal">
+        <p class="cot-intro">¿Prefieres que te contactemos? Déjanos tus datos y un asesor KMK te llamará en menos de 24 horas.</p>
+        <div class="cot-item"><span class="cot-ic">📧</span><div><div class="cot-il">Email</div><div class="cot-iv">hola@kmksm.mx</div></div></div>
+        <div class="cot-item"><span class="cot-ic">💬</span><div><div class="cot-il">Chat inmediato</div><div class="cot-iv">Citlalli disponible 24/7</div></div></div>
+        <div class="cot-item"><span class="cot-ic">🌐</span><div><div class="cot-il">Sitio Web</div><div class="cot-iv">kmksm.mx</div></div></div>
+        <button class="btn-main" onclick="openChat()" style="width:100%;justify-content:center">✨ O chatea con Citlalli ahora →</button>
+      </div>
+      <div class="cot-form reveal">
+        <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:18px;color:var(--text);margin-bottom:4px">📋 Formulario de contacto</div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Un asesor te contactará en menos de 24 hrs</div>
+        <div class="frow">
+          <div class="fg"><label class="fl">Nombre</label><input type="text" class="fi" placeholder="Tu nombre" required></div>
+          <div class="fg"><label class="fl">Teléfono</label><input type="tel" class="fi" placeholder="+52 000 000 0000" required></div>
+        </div>
+        <div class="fg"><label class="fl">Correo electrónico</label><input type="email" class="fi" placeholder="tu@correo.com" required></div>
+        <div class="fg">
+          <label class="fl">¿Qué te interesa producir?</label>
+          <select class="fsel fi" id="maqSel"><option value="">Seleccionar...</option></select>
+        </div>
+        <div class="fg"><label class="fl">Ciudad / Estado</label><input type="text" class="fi" placeholder="Ej: Guadalajara, Jalisco"></div>
+        <div class="fg"><label class="fl">Mensaje (opcional)</label><textarea class="fta" placeholder="Cuéntanos sobre tu proyecto..."></textarea></div>
+        <button type="button" class="fsub" onclick="handleForm(this)">Enviar solicitud →</button>
+        <div class="fok" id="formOk">✅ ¡Solicitud enviada! Un asesor KMK te contactará pronto.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ft-top">
+    <div>
+      <div class="ft-logo"><img src="logotk.png" alt="KMK Snack Machines"></div>
+      <p class="ft-desc">Máquinas modeladoras de snacks salados y dulces con tecnología de punta. 4 años impulsando emprendedores en México.</p>
+    </div>
+    <div class="ft-col"><h4>Navegación</h4><ul><li><a href="#maquinas">Máquinas</a></li><li><a href="#como-funciona">Cómo funciona</a></li><li><a href="#testimonios">Casos de éxito</a></li><li><a href="#cotizar">Asesoría</a></li></ul></div>
+    <div class="ft-col"><h4>Contacto</h4><ul><li><a href="mailto:hola@kmksm.mx">hola@kmksm.mx</a></li><li><a href="#" onclick="openChat();return false">Chat con Citlalli</a></li><li><a href="#cotizar">Solicitar asesoría</a></li></ul></div>
+  </div>
+  <div class="ft-bot"><p>© 2025 KMK Snack Machines. Todos los derechos reservados.</p><p>Hecho con ❤️ en México</p></div>
+</footer>
+
+<div class="modal-ov" id="modalOv">
+  <div class="modal-box">
+    <div class="modal-hdr"><div class="modal-title" id="modalTitle"></div><button class="modal-x" onclick="closeModal()">✕</button></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="cw" id="chatWidget">
+  <div class="cw-panel" id="cwPanel">
+    <div class="cw-hdr">
+      <div class="cw-hdr-l"><div class="cw-av">✨</div><div><div class="cw-name">Citlalli</div><div class="cw-on">En línea — KMK</div></div></div>
+      <button class="cw-x" id="cwX">✕</button>
+    </div>
+    <div class="cw-msgs" id="cwMsgs">
+      <div class="wm wm-b">¡Hola! 👋 Soy <strong>Citlalli</strong>, asesora de KMK Snack Machines.<br><br>¿Qué tipo de snacks te gustaría producir?</div>
+      <div class="cw-typing" id="cwTyping"><div class="cw-dot"></div><div class="cw-dot"></div><div class="cw-dot"></div></div>
+    </div>
+    <div class="cw-quick" id="cwQuick">
+      <button class="cw-qbtn" onclick="sendQuick('Quiero producir snacks salados')">🧆 Salados</button>
+      <button class="cw-qbtn" onclick="sendQuick('Quiero producir snacks dulces')">🍬 Dulces</button>
+      <button class="cw-qbtn" onclick="sendQuick('¿Qué máquina me recomiendas?')">⚙️ Máquinas</button>
+      <button class="cw-qbtn" onclick="sendQuick('¿Cuánto puedo ganar?')">💰 Potencial</button>
+    </div>
+    <div class="cw-ir">
+      <input type="text" class="cw-i" id="cwInput" placeholder="Escribe tu pregunta...">
+      <button class="cw-snd" id="cwSnd">→</button>
+    </div>
+  </div>
+  <button class="cw-btn" id="cwBtn"><span>💬</span><span class="cw-badge" id="cwBadge">1</span></button>
+</div>
+
+<button class="adm-trig" onclick="openAdm()">⚙️ Panel Admin</button>
+
+<div class="adm-ov" id="admOv">
+  <div class="adm-box">
+    <div class="adm-hdr"><div class="adm-htitle">⚙️ Panel <em>Admin KMK</em></div><button class="adm-x" onclick="closeAdm()">✕</button></div>
+    <div class="adm-body">
+      <div class="adm-sec">
+        <div class="adm-sec-title">🖼️ Banner / Carrusel</div>
+        <div class="adm-sec-sub">Hasta 5 slides. Pon la URL de tu imagen de fondo, título y subtítulo. Si no hay imagen se usa el color de fondo.</div>
+        <div id="sliderList"></div>
+        <button class="adm-add-btn" onclick="addSlide()">+ Agregar slide</button>
+      </div>
+      <div class="adm-sec">
+        <div class="adm-sec-title">🍿 Productos (¿Qué puedes producir?)</div>
+        <div class="adm-sec-sub">Emoji o URL de imagen, nombre y descripción corta de cada snack.</div>
+        <div id="prodAdmList"></div>
+        <button class="adm-add-btn" onclick="addProd()">+ Agregar producto</button>
+      </div>
+      <div class="adm-sec">
+        <div class="adm-sec-title">⚙️ Máquinas</div>
+        <div class="adm-sec-sub">Nombre, descripción, especificaciones separadas por coma, imagen (URL) y video YouTube (URL). Sin precio.</div>
+        <div id="admMaqList"></div>
+        <button class="adm-add-btn" onclick="addMaq()">+ Agregar máquina</button>
+      </div>
+      <div class="adm-sec">
+        <div class="adm-sec-title">⭐ Testimonios / Videos de clientes</div>
+        <div class="adm-sec-sub">Video YouTube, testimonio en texto, nombre y ciudad del cliente.</div>
+        <div id="admTestList"></div>
+        <button class="adm-add-btn" onclick="addTest()">+ Agregar testimonio</button>
+      </div>
+      <button class="adm-save-btn" onclick="saveAll()">💾 Guardar y publicar todos los cambios</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DEF_SLIDES=[{id:1,img:'',color:'#0B0D3C',title:'Inicia tu negocio de snacks con maquinaria profesional',sub:'Produce churros, kibbeh y más con equipos diseñados para generar ingresos desde el primer día',btn1:'✨ Recibir recomendación personalizada',btn2:'💬 Hablar con un asesor'},{id:2,img:'',color:'#1a0a00',title:'Más de 100 tipos de snacks salados y dulces',sub:'Una sola máquina KMK. Hasta 12,000 piezas por hora. Certificación Europea incluida.',btn1:'🍿 Descubrir la mejor opción para mí',btn2:'⚙️ Ver todas las máquinas'},{id:3,img:'',color:'#0a0a1a',title:'Capacitación, soporte y recetario completo',sub:'No estás solo. KMK te acompaña desde la compra hasta tus primeras ventas.',btn1:'🚀 Quiero asesoría personalizada',btn2:'📋 Cómo funciona'}];
+const DEF_PRODS=[{id:1,emoji:'🌀',img:'',name:'Churros',desc:'Salados y dulces'},{id:2,emoji:'🧆',img:'',name:'Kibbeh',desc:'Árabe tradicional'},{id:3,emoji:'🥟',img:'',name:'Croquetas',desc:'Rellenas o simples'},{id:4,emoji:'🥙',img:'',name:'Empanadas',desc:'Varios sabores'},{id:5,emoji:'🫓',img:'',name:'Falafel',desc:'Sin gluten'},{id:6,emoji:'🌮',img:'',name:'Tequeños',desc:'Con queso'},{id:7,emoji:'🥐',img:'',name:'Almohadas',desc:'Dulces rellenas'},{id:8,emoji:'🍡',img:'',name:'Bocaditos',desc:'De masa variada'}];
+const DEF_MAQ=[{id:1,tag:'BESTSELLER',emoji:'⚙️',name:'Modeladora JetFood Black Premium 15.0',desc:'La máquina más potente de la línea JetFood. Ideal para producción a gran escala con hasta 12,000 snacks por hora. Equipada con los más recientes avances en automatización y control.',specs:['Capacidad: 12,000 snacks/hora','Snack: 7g hasta 234g','+100 tipos de snacks','4 formatos de moldes','Certificación Europea'],img:'',video:''},{id:2,tag:'RECOMENDADA',emoji:'🔧',name:'Modeladora JetFood Master AC 5.0',desc:'Versatilidad y eficiencia en un solo equipo. Perfecta para emprendedores y productores medianos. Produce más de 100 tipos de snacks salados y dulces.',specs:['Capacidad: 5,000 snacks/hora','Snack: 7g hasta 240g','9 boquillas de masa','5 boquillas de relleno','Recetario incluido'],img:'',video:''},{id:3,tag:'',emoji:'🏭',name:'Modeladora JetFood Black Premium 7.0',desc:'El equilibrio perfecto entre capacidad y costo. Con 7,000 snacks por hora, ideal para negocios en crecimiento.',specs:['Capacidad: 7,000 snacks/hora','Snack: 7g hasta 240g','Múltiples formatos','Certificación Europea'],img:'',video:''}];
+const DEF_TEST=[{id:1,video:'',quote:'Con la máquina KMK empecé a vender churros desde la primera semana. La capacitación fue excelente y el soporte es increíble.',name:'María González',city:'Guadalajara, Jalisco',stars:5},{id:2,video:'',quote:'Nunca imaginé tener mi propio negocio de snacks. KMK me acompañó en cada paso. 100% recomendados.',name:'Carlos Mendoza',city:'Monterrey, NL',stars:5},{id:3,video:'',quote:'Calidad impresionante. Certificación europea, fácil de limpiar y mantener. Excelente inversión.',name:'Ana Ramírez',city:'Ciudad de México',stars:5}];
+
+const ld=(k,d)=>{try{const s=localStorage.getItem(k);return s?JSON.parse(s):d;}catch(e){return d;}};
+const sv=(k,d)=>{try{localStorage.setItem(k,JSON.stringify(d));}catch(e){}};
+const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const ytId=url=>{const m=url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&?/]+)/);return m?m[1]:'';};
+
+// TICKER
+(()=>{const items=['CHURROS','KIBBEH','CROQUETAS','EMPANADAS','FALAFEL','TEQUEÑOS','+100 SNACKS','CERTIFICACIÓN CE'];const t=document.getElementById('tickerTrack');const html=items.map(i=>`<span style="font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#fff;padding:0 36px;display:inline-flex;align-items:center;gap:16px">${i}<span style="width:5px;height:5px;background:#F97316;border-radius:50%;flex-shrink:0"></span></span>`).join('');t.innerHTML=html+html;})();
+
+// SLIDER
+let sIdx=0,sTimer;
+function renderSlider(){
+  const slides=ld('kmk_sl',DEF_SLIDES);
+  const el=document.getElementById('heroSlider');
+  el.innerHTML=slides.map((s,i)=>`
+    <div class="slide${i===0?' active':''}" id="sl${i}">
+      <div class="slide-bg" style="background-color:${s.color||'#0B0D3C'};${s.img?`background-image:url('${s.img}')`:''};background-size:cover;background-position:center;position:absolute;inset:0"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <div class="slide-tag">KMK Snack Machines</div>
+        <h1 class="slide-title">${s.title||''}</h1>
+        <p class="slide-sub">${s.sub||''}</p>
+        <div class="slide-btns">
+          <button class="btn-hero-main" onclick="openChat()">${s.btn1||'Recibir recomendación'}</button>
+          <button class="btn-hero-ghost" onclick="openChat()">${s.btn2||'Hablar con asesor'}</button>
+        </div>
+      </div>
+    </div>`).join('')+
+    `<button class="slider-arrow prev" onclick="prevSlide()">‹</button>
+     <button class="slider-arrow next" onclick="nextSlide()">›</button>
+     <div class="slider-dots">${slides.map((_,i)=>`<button class="sdot${i===0?' active':''}" onclick="goSlide(${i})"></button>`).join('')}</div>`;
+  sIdx=0;clearInterval(sTimer);sTimer=setInterval(nextSlide,5000);
+}
+function goSlide(n){
+  const slides=document.querySelectorAll('.slide'),dots=document.querySelectorAll('.sdot');
+  slides.forEach(s=>s.classList.remove('active'));dots.forEach(d=>d.classList.remove('active'));
+  sIdx=((n%slides.length)+slides.length)%slides.length;
+  slides[sIdx]?.classList.add('active');dots[sIdx]?.classList.add('active');
+}
+function nextSlide(){goSlide(sIdx+1);}
+function prevSlide(){goSlide(sIdx-1);}
+
+// PRODS
+function renderProds(){
+  const p=ld('kmk_pr',DEF_PRODS);
+  document.getElementById('prodGrid').innerHTML=p.map(x=>`
+    <div class="prod-card" onclick="openChat()">
+      ${x.img?`<img src="${x.img}" class="prod-img" alt="${x.name}">`:`<div class="prod-img-ph">${x.emoji||'🍿'}</div>`}
+      <div class="prod-name">${x.name}</div>
+      <div class="prod-desc">${x.desc}</div>
+    </div>`).join('');
+}
+
+// MAQ
+function renderMaq(){
+  const m=ld('kmk_mq',DEF_MAQ);
+  const g=document.getElementById('maqGrid');
+  const sel=document.getElementById('maqSel');
+  if(!m.length){g.innerHTML='<div class="no-maq">No hay máquinas. Usa el panel Admin.</div>';return;}
+  g.innerHTML=m.map(x=>`
+    <div class="mcard">
+      <div class="mcard-media">
+        ${x.img?`<img src="${x.img}" alt="${x.name}" class="mcard-img">`:`<div class="mcard-img-ph">${x.emoji||'⚙️'}</div>`}
+        ${x.tag?`<span class="mcard-tag">${x.tag}</span>`:''}
+      </div>
+      <div class="mcard-body">
+        <div class="mcard-name">${x.name}</div>
+        <p class="mcard-desc">${x.desc.substring(0,130)}...</p>
+        <div class="mcard-specs">${(x.specs||[]).slice(0,3).map(s=>`<span class="mspec">${s}</span>`).join('')}</div>
+        <div class="mcard-cta">
+          <button class="mcard-btn-main" onclick="openModal(${x.id})">Ver detalles →</button>
+          <button class="mcard-btn-sec" onclick="openChat()">💬 ¿Esta es la indicada para mí?</button>
+        </div>
+      </div>
+    </div>`).join('');
+  if(sel) sel.innerHTML='<option value="">Seleccionar...</option>'+m.map(x=>`<option>${x.name}</option>`).join('');
+}
+
+// MODAL
+function openModal(id){
+  const m=ld('kmk_mq',DEF_MAQ).find(x=>x.id===id);if(!m)return;
+  document.getElementById('modalTitle').textContent=m.name;
+  const vid=m.video?ytId(m.video):'';
+  document.getElementById('modalBody').innerHTML=`
+    <div class="modal-media">
+      ${vid?`<iframe src="https://www.youtube.com/embed/${vid}" allowfullscreen></iframe>`
+        :m.img?`<img src="${m.img}" alt="${m.name}">`
+        :`<div class="modal-media-ph">${m.emoji||'⚙️'}</div>`}
+    </div>
+    <div>
+      <p class="modal-desc">${m.desc}</p>
+      <div class="modal-specs-title">Especificaciones</div>
+      <ul class="modal-specs">${(m.specs||[]).map(s=>`<li>${s}</li>`).join('')}</ul>
+      <button class="modal-cta-btn" onclick="closeModal();openChat()">💬 ¿Esta es la indicada para mí? →</button>
+    </div>`;
+  document.getElementById('modalOv').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('modalOv').classList.remove('open');document.body.style.overflow='';}
+document.getElementById('modalOv').addEventListener('click',e=>{if(e.target===document.getElementById('modalOv'))closeModal();});
+
+// TEST
+function renderTest(){
+  const t=ld('kmk_ts',DEF_TEST);
+  document.getElementById('testGrid').innerHTML=t.map(x=>{
+    const vid=x.video?ytId(x.video):'';
+    return `<div class="tcard">
+      <div class="tcard-video">
+        ${vid?`<iframe src="https://www.youtube.com/embed/${vid}" allowfullscreen></iframe>`
+          :`<div class="tcard-video-ph"><div class="tcard-play">▶</div><div class="tcard-ph-text">Video próximamente</div></div>`}
+      </div>
+      <div class="tcard-body">
+        <div class="tcard-stars">${'★'.repeat(x.stars||5)}</div>
+        <p class="tcard-quote">"${x.quote}"</p>
+        <div class="tcard-author">
+          <div class="tcard-av">${x.name?x.name[0]:'C'}</div>
+          <div><div class="tcard-name">${x.name}</div><div class="tcard-loc">${x.city}</div></div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ADMIN
+let aS=[],aP=[],aM=[],aT=[];
+function openAdm(){
+  aS=JSON.parse(JSON.stringify(ld('kmk_sl',DEF_SLIDES)));
+  aP=JSON.parse(JSON.stringify(ld('kmk_pr',DEF_PRODS)));
+  aM=JSON.parse(JSON.stringify(ld('kmk_mq',DEF_MAQ)));
+  aT=JSON.parse(JSON.stringify(ld('kmk_ts',DEF_TEST)));
+  rAdmS();rAdmP();rAdmM();rAdmT();
+  document.getElementById('admOv').classList.add('open');
+}
+function closeAdm(){document.getElementById('admOv').classList.remove('open');}
+
+function rAdmS(){document.getElementById('sliderList').innerHTML=aS.map((s,i)=>`
+  <div class="arow">
+    <button class="del-btn" onclick="aS.splice(${i},1);rAdmS()">✕</button>
+    <div class="full"><label class="al">URL imagen de fondo</label><input class="ai" value="${esc(s.img)}" oninput="aS[${i}].img=this.value" placeholder="https://..."></div>
+    <div class="full"><label class="al">Título</label><input class="ai" value="${esc(s.title)}" oninput="aS[${i}].title=this.value"></div>
+    <div class="full"><label class="al">Subtítulo</label><input class="ai" value="${esc(s.sub)}" oninput="aS[${i}].sub=this.value"></div>
+    <div><label class="al">Texto botón 1</label><input class="ai" value="${esc(s.btn1)}" oninput="aS[${i}].btn1=this.value"></div>
+    <div><label class="al">Texto botón 2</label><input class="ai" value="${esc(s.btn2)}" oninput="aS[${i}].btn2=this.value"></div>
+    <div><label class="al">Color fondo</label><input class="ai" type="color" value="${s.color||'#0B0D3C'}" oninput="aS[${i}].color=this.value" style="height:42px;padding:4px"></div>
+  </div>`).join('');}
+function addSlide(){if(aS.length>=5)return alert('Máximo 5 slides');aS.push({id:Date.now(),img:'',color:'#0B0D3C',title:'Nuevo slide',sub:'',btn1:'✨ Recibir recomendación',btn2:'💬 Hablar con asesor'});rAdmS();}
+
+function rAdmP(){document.getElementById('prodAdmList').innerHTML=aP.map((p,i)=>`
+  <div class="arow" style="grid-template-columns:1fr 1fr 1fr">
+    <button class="del-btn" onclick="aP.splice(${i},1);rAdmP()">✕</button>
+    <div><label class="al">Emoji</label><input class="ai" value="${esc(p.emoji)}" oninput="aP[${i}].emoji=this.value" placeholder="🍿"></div>
+    <div><label class="al">Nombre</label><input class="ai" value="${esc(p.name)}" oninput="aP[${i}].name=this.value" placeholder="Churros"></div>
+    <div><label class="al">Descripción</label><input class="ai" value="${esc(p.desc)}" oninput="aP[${i}].desc=this.value" placeholder="Salados y dulces"></div>
+    <div class="full"><label class="al">URL imagen (opcional)</label><input class="ai" value="${esc(p.img)}" oninput="aP[${i}].img=this.value" placeholder="https://..."></div>
+  </div>`).join('');}
+function addProd(){aP.push({id:Date.now(),emoji:'🍿',name:'',desc:'',img:''});rAdmP();}
+
+function rAdmM(){document.getElementById('admMaqList').innerHTML=aM.map((m,i)=>`
+  <div class="arow">
+    <button class="del-btn" onclick="aM.splice(${i},1);rAdmM()">✕ Eliminar</button>
+    <div class="full"><label class="al">Nombre</label><input class="ai" value="${esc(m.name)}" oninput="aM[${i}].name=this.value" placeholder="Modeladora JetFood..."></div>
+    <div><label class="al">Etiqueta</label><input class="ai" value="${esc(m.tag||'')}" oninput="aM[${i}].tag=this.value" placeholder="BESTSELLER"></div>
+    <div><label class="al">Emoji</label><input class="ai" value="${esc(m.emoji||'⚙️')}" oninput="aM[${i}].emoji=this.value"></div>
+    <div class="full"><label class="al">Descripción</label><textarea class="ai ata" oninput="aM[${i}].desc=this.value">${esc(m.desc)}</textarea></div>
+    <div class="full"><label class="al">Especificaciones (separadas por coma)</label><input class="ai" value="${esc((m.specs||[]).join(', '))}" oninput="aM[${i}].specs=this.value.split(',').map(s=>s.trim()).filter(Boolean)"></div>
+    <div class="full"><label class="al">URL imagen</label><input class="ai" value="${esc(m.img||'')}" oninput="aM[${i}].img=this.value" placeholder="https://..."></div>
+    <div class="full"><label class="al">URL video YouTube</label><input class="ai" value="${esc(m.video||'')}" oninput="aM[${i}].video=this.value" placeholder="https://youtube.com/watch?v=..."></div>
+  </div>`).join('');}
+function addMaq(){aM.push({id:Date.now(),tag:'',emoji:'⚙️',name:'',desc:'',specs:[],img:'',video:''});rAdmM();}
+
+function rAdmT(){document.getElementById('admTestList').innerHTML=aT.map((t,i)=>`
+  <div class="arow">
+    <button class="del-btn" onclick="aT.splice(${i},1);rAdmT()">✕ Eliminar</button>
+    <div class="full"><label class="al">URL video YouTube</label><input class="ai" value="${esc(t.video||'')}" oninput="aT[${i}].video=this.value" placeholder="https://youtube.com/watch?v=..."></div>
+    <div class="full"><label class="al">Testimonio</label><textarea class="ai ata" oninput="aT[${i}].quote=this.value">${esc(t.quote||'')}</textarea></div>
+    <div><label class="al">Nombre</label><input class="ai" value="${esc(t.name||'')}" oninput="aT[${i}].name=this.value" placeholder="María González"></div>
+    <div><label class="al">Ciudad</label><input class="ai" value="${esc(t.city||'')}" oninput="aT[${i}].city=this.value" placeholder="Guadalajara, Jalisco"></div>
+  </div>`).join('');}
+function addTest(){aT.push({id:Date.now(),video:'',quote:'',name:'',city:'',stars:5});rAdmT();}
+
+function saveAll(){
+  sv('kmk_sl',aS);sv('kmk_pr',aP);sv('kmk_mq',aM);sv('kmk_ts',aT);
+  renderSlider();renderProds();renderMaq();renderTest();
+  closeAdm();
+  const b=document.querySelector('.adm-save-btn');
+  b.textContent='✅ ¡Guardado y publicado!';
+  setTimeout(()=>b.textContent='💾 Guardar y publicar todos los cambios',2500);
+}
+
+// NAV
+window.addEventListener('scroll',()=>document.getElementById('mainNav').classList.toggle('scrolled',scrollY>50));
+function toggleNav(){
+  const l=document.getElementById('navLinks');
+  const o=l.style.display==='flex';
+  l.style.cssText=o?'':'display:flex;flex-direction:column;position:fixed;top:72px;left:0;right:0;background:#fff;padding:20px;gap:0;border-bottom:1px solid #E0E2F0;z-index:899;box-shadow:0 8px 24px rgba(0,0,0,.1)';
+  if(!o)l.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>l.style.display=''));
+}
+
+// REVEAL
+document.querySelectorAll('.reveal').forEach(el=>new IntersectionObserver(([e])=>{if(e.isIntersecting)el.classList.add('visible');},{threshold:0.1}).observe(el));
+
+// FORM
+function handleForm(btn){btn.disabled=true;btn.textContent='Enviando...';setTimeout(()=>{btn.style.display='none';document.getElementById('formOk').style.display='block';},1200);}
+
+// CITLALLI — conectada al servidor real de Railway
+const CITLALLI_URL = 'https://kmk-citlalli-production.up.railway.app';
+const SESSION_ID = 'web_' + Math.random().toString(36).slice(2, 10);
+
+const cwBtn=document.getElementById('cwBtn'),cwPanel=document.getElementById('cwPanel'),cwX=document.getElementById('cwX'),cwInput=document.getElementById('cwInput'),cwSnd=document.getElementById('cwSnd'),cwMsgs=document.getElementById('cwMsgs'),cwTyping=document.getElementById('cwTyping'),cwBadge=document.getElementById('cwBadge');
+let chatOpen=false;
+
+function openChat(){cwPanel.classList.add('open');cwBadge.style.display='none';chatOpen=true;setTimeout(()=>cwInput.focus(),100);}
+cwBtn.addEventListener('click',openChat);
+cwX.addEventListener('click',()=>{cwPanel.classList.remove('open');chatOpen=false;});
+
+function addMsg(t,type){
+  const d=document.createElement('div');
+  d.className=`wm wm-${type}`;
+  d.innerHTML=String(t).replace(/\n/g,'<br>');
+  cwMsgs.insertBefore(d,cwTyping);
+  cwMsgs.scrollTop=cwMsgs.scrollHeight;
+}
+
+function sendQuick(t){document.getElementById('cwQuick').style.display='none';cwInput.value=t;sendMsg();}
+
+async function sendMsg(){
+  const t=cwInput.value.trim();if(!t)return;
+  addMsg(t,'u');cwInput.value='';
+  cwTyping.style.display='flex';cwMsgs.scrollTop=cwMsgs.scrollHeight;
+  try{
+    const r=await fetch(`${CITLALLI_URL}/api/chat`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({message:t, conversationId:SESSION_ID, canal:'web'})
+    });
+    const j=await r.json();
+    cwTyping.style.display='none';
+    const rep=j?.message;
+    if(!rep)throw new Error('sin respuesta');
+    addMsg(rep,'b');
+  }catch(e){
+    cwTyping.style.display='none';
+    addMsg('Para atenderte de inmediato escríbenos a hola@kmksm.mx o al WhatsApp 523311925116 😊','b');
+  }
+}
+cwSnd.addEventListener('click',sendMsg);
+cwInput.addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg();});
+
+setTimeout(()=>{if(!chatOpen)openChat();},8000);
+
+renderSlider();renderProds();renderMaq();renderTest();
+</script>
+</body>
+</html>
