@@ -255,6 +255,12 @@ footer{background:var(--blue);color:var(--white);padding:56px 40px 36px}
 .adm-add-btn:hover{border-color:var(--blue);background:var(--blue-xl)}
 .adm-save-btn{background:var(--orange);color:var(--white);font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;padding:14px;border:none;border-radius:50px;cursor:pointer;transition:all .2s;width:100%}
 .adm-save-btn:hover{background:var(--orange2)}
+.drag-handle{cursor:grab;color:var(--muted);font-size:18px;padding:4px 8px;border-radius:6px;user-select:none;flex-shrink:0}
+.drag-handle:hover{background:var(--gray2);color:var(--text)}
+.drag-handle:active{cursor:grabbing}
+.arow{transition:opacity .2s,transform .2s}
+.arow.dragging{opacity:.4;transform:scale(.98)}
+.arow.drag-over{border:2px dashed var(--orange)!important;background:rgba(249,115,22,.04)!important}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
 @media(max-width:960px){
@@ -700,7 +706,16 @@ function openAdm(){
 function closeAdm(){document.getElementById('admOv').classList.remove('open');}
 
 function rAdmS(){document.getElementById('sliderList').innerHTML=aS.map((s,i)=>`
-  <div class="arow">
+  <div class="arow" draggable="true" data-idx="${i}"
+    ondragstart="dragStart(event,'slide')"
+    ondragover="dragOver(event)"
+    ondragleave="dragLeave(event)"
+    ondrop="dragDrop(event,'slide')"
+    ondragend="dragEnd(event)">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <span class="drag-handle" title="Arrastrar para reordenar">⠿</span>
+      <span style="font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;color:var(--muted)">Slide #${i+1}</span>
+    </div>
     <button class="del-btn" onclick="aS.splice(${i},1);rAdmS()">✕ Quitar</button>
     <div style="display:grid;grid-template-columns:130px 1fr;gap:20px;align-items:start">
       <div style="text-align:center">
@@ -723,7 +738,16 @@ function rAdmS(){document.getElementById('sliderList').innerHTML=aS.map((s,i)=>`
 function addSlide(){if(aS.length>=5)return alert('Máximo 5 slides');aS.push({id:Date.now(),img:'',color:'#0B0D3C',title:'Nuevo slide',sub:'',btn1:'✨ Recibir recomendación',btn2:'💬 Hablar con asesor'});rAdmS();}
 
 function rAdmP(){document.getElementById('prodAdmList').innerHTML=aP.map((p,i)=>`
-  <div class="arow">
+  <div class="arow" draggable="true" data-idx="${i}" 
+    ondragstart="dragStart(event,'prod')"
+    ondragover="dragOver(event)"
+    ondragleave="dragLeave(event)"
+    ondrop="dragDrop(event,'prod')"
+    ondragend="dragEnd(event)">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <span class="drag-handle" title="Arrastrar para reordenar">⠿</span>
+      <span style="font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;color:var(--muted)">#${i+1}</span>
+    </div>
     <button class="del-btn" onclick="aP.splice(${i},1);rAdmP()">✕</button>
     <div style="display:grid;grid-template-columns:84px 1fr;gap:16px;align-items:start">
       <div style="text-align:center">
@@ -741,7 +765,16 @@ function rAdmP(){document.getElementById('prodAdmList').innerHTML=aP.map((p,i)=>
 function addProd(){aP.push({id:Date.now(),emoji:'🍿',name:'',desc:'',img:''});rAdmP();}
 
 function rAdmM(){document.getElementById('admMaqList').innerHTML=aM.map((m,i)=>`
-  <div class="arow">
+  <div class="arow" draggable="true" data-idx="${i}"
+    ondragstart="dragStart(event,'maq')"
+    ondragover="dragOver(event)"
+    ondragleave="dragLeave(event)"
+    ondrop="dragDrop(event,'maq')"
+    ondragend="dragEnd(event)">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <span class="drag-handle" title="Arrastrar para reordenar">⠿</span>
+      <span style="font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;color:var(--muted)">Máquina #${i+1}</span>
+    </div>
     <button class="del-btn" onclick="aM.splice(${i},1);rAdmM()">✕ Eliminar</button>
     <div style="display:grid;grid-template-columns:120px 1fr;gap:20px;align-items:start">
       <div style="text-align:center">
@@ -764,7 +797,16 @@ function rAdmM(){document.getElementById('admMaqList').innerHTML=aM.map((m,i)=>`
 function addMaq(){aM.push({id:Date.now(),tag:'',emoji:'⚙️',name:'',desc:'',specs:[],img:'',video:''});rAdmM();}
 
 function rAdmT(){document.getElementById('admTestList').innerHTML=aT.map((t,i)=>`
-  <div class="arow">
+  <div class="arow" draggable="true" data-idx="${i}"
+    ondragstart="dragStart(event,'test')"
+    ondragover="dragOver(event)"
+    ondragleave="dragLeave(event)"
+    ondrop="dragDrop(event,'test')"
+    ondragend="dragEnd(event)">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <span class="drag-handle" title="Arrastrar para reordenar">⠿</span>
+      <span style="font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;color:var(--muted)">Testimonio #${i+1}</span>
+    </div>
     <button class="del-btn" onclick="aT.splice(${i},1);rAdmT()">✕ Eliminar</button>
     <div class="full"><label class="al">URL video YouTube</label><input class="ai" value="${esc(t.video||'')}" oninput="aT[${i}].video=this.value" placeholder="https://youtube.com/watch?v=..."></div>
     <div class="full"><label class="al">Testimonio</label><textarea class="ai ata" oninput="aT[${i}].quote=this.value">${esc(t.quote||'')}</textarea></div>
@@ -772,6 +814,58 @@ function rAdmT(){document.getElementById('admTestList').innerHTML=aT.map((t,i)=>
     <div><label class="al">Ciudad</label><input class="ai" value="${esc(t.city||'')}" oninput="aT[${i}].city=this.value" placeholder="Guadalajara, Jalisco"></div>
   </div>`).join('');}
 function addTest(){aT.push({id:Date.now(),video:'',quote:'',name:'',city:'',stars:5});rAdmT();}
+
+
+// ════════════════════════════════════════
+// DRAG & DROP REORDENAR
+// ════════════════════════════════════════
+let dragSrcIdx = null;
+let dragList = null;
+
+function dragStart(e, list){
+  dragSrcIdx = parseInt(e.currentTarget.dataset.idx);
+  dragList = list;
+  e.currentTarget.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+
+function dragOver(e){
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  e.currentTarget.classList.add('drag-over');
+}
+
+function dragLeave(e){
+  e.currentTarget.classList.remove('drag-over');
+}
+
+function dragDrop(e, list){
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  const targetIdx = parseInt(e.currentTarget.dataset.idx);
+  if(dragSrcIdx === null || dragSrcIdx === targetIdx) return;
+  
+  let arr;
+  if(list === 'prod') arr = aP;
+  else if(list === 'maq') arr = aM;
+  else if(list === 'slide') arr = aS;
+  else if(list === 'test') arr = aT;
+  
+  const moved = arr.splice(dragSrcIdx, 1)[0];
+  arr.splice(targetIdx, 0, moved);
+  
+  if(list === 'prod') rAdmP();
+  else if(list === 'maq') rAdmM();
+  else if(list === 'slide') rAdmS();
+  else if(list === 'test') rAdmT();
+  
+  dragSrcIdx = null;
+}
+
+function dragEnd(e){
+  e.currentTarget.classList.remove('dragging');
+  document.querySelectorAll('.arow').forEach(r => r.classList.remove('drag-over'));
+}
 
 function saveAll(){
   sv('kmk_sl',aS);sv('kmk_pr',aP);sv('kmk_mq',aM);sv('kmk_ts',aT);
